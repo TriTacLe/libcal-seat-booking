@@ -35,3 +35,11 @@ def test_hand_written_names_survive_a_refresh(fixture):
     cat.merge_seats(catalogue, cat.parse_resources(fixture("spaces-33215.html"), 5154, 33215))
     assert catalogue.label_for(165230) == "my favourite"
     assert catalogue.label_for(165231) == "KC02"
+
+
+def test_seat_mode_is_read_off_the_resources(fixture):
+    catalogue = cat.Catalogue()
+    cat.merge_seats(catalogue, cat.parse_resources(fixture("spaces-33215.html"), 5154, 33215))
+    cat.merge_seats(catalogue, cat.parse_resources(fixture("spaces-13236.html"), 5154, 13236))
+    assert catalogue.is_seat_booking(5154, 33215) is True
+    assert catalogue.is_seat_booking(5154, 13236) is False

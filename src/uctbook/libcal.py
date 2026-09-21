@@ -48,6 +48,7 @@ class GridQuery:
         capacity: int = -1,
         filters: list[int] | None = None,
         page_size: int = 200,
+        seat_booking: bool = True,
     ) -> None:
         self.lid = lid
         self.gid = gid
@@ -55,13 +56,14 @@ class GridQuery:
         self.capacity = capacity
         self.filters = filters or []
         self.page_size = page_size
+        self.seat_booking = seat_booking
 
     def body(self, start: date, end: date, page_index: int = 0) -> list[tuple[str, str]]:
         fields: list[tuple[str, str]] = [
             ("lid", str(self.lid)),
             ("gid", str(self.gid)),
             ("eid", "-1"),
-            ("seat", "1"),
+            ("seat", "1" if self.seat_booking else "0"),
             ("seatId", "0"),
             ("zone", str(self.zone)),
         ]

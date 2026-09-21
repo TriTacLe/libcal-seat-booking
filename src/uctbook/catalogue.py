@@ -104,6 +104,14 @@ class Catalogue(BaseModel):
     def eid_by_seat(self) -> dict[int, int]:
         return {seat.id: seat.eid for seat in self.seats if seat.eid}
 
+    def is_seat_booking(self, lid: int, gid: int) -> bool:
+        """Seats have their own id under a shared resource; a room is its own
+        resource. The grid rejects the wrong mode with "Seat not found"."""
+        for seat in self.seats:
+            if seat.location == lid and seat.category == gid:
+                return seat.id != seat.eid
+        return False
+
     def labels(self) -> dict[int, str]:
         return {seat.id: seat.name for seat in self.seats if seat.name}
 

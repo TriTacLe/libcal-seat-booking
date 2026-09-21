@@ -44,12 +44,15 @@ def _load(config: Path) -> Config:
 
 
 def _query(spec: TargetSpec, catalogue: cat.Catalogue) -> GridQuery:
+    lid = catalogue.location(spec.location).id
+    gid = catalogue.category(spec.location, spec.category) if spec.category else 0
     return GridQuery(
-        lid=catalogue.location(spec.location).id,
-        gid=catalogue.category(spec.location, spec.category) if spec.category else 0,
+        lid=lid,
+        gid=gid,
         zone=catalogue.zone(spec.location, spec.zone) if spec.zone else 0,
         capacity=catalogue.capacity(spec.location, spec.capacity) if spec.capacity else -1,
         filters=spec.filters,
+        seat_booking=catalogue.is_seat_booking(lid, gid),
     )
 
 

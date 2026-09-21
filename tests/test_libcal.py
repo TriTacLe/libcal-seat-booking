@@ -69,3 +69,12 @@ def test_malformed_slot_is_a_libcal_error():
         parse_grid({"slots": [{"itemId": "nope"}]}, SAST)
     with pytest.raises(LibCalError):
         parse_grid({"error": "maintenance"}, SAST)
+
+
+def test_room_categories_ask_for_the_room_not_a_seat():
+    """seat=1 on a room category is rejected with "Seat not found"."""
+    rooms = GridQuery(lid=5154, gid=13236, seat_booking=False)
+    body = _encode(rooms.body(date(2026, 9, 28), date(2026, 9, 29)))
+    assert "seat=0" in body
+    seats = GridQuery(lid=5154, gid=33215)
+    assert "seat=1" in _encode(seats.body(date(2026, 9, 28), date(2026, 9, 29)))

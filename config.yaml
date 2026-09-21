@@ -12,9 +12,7 @@ targets:
     zone: Vincent Kolbe Knowledge Commons
     category: Knowledge Commons Computers
     capacity: Single Seat Booking
-    filters: [5005, 5006]
     rules:
-      slot_minutes: 5
       window_days: 14
       max_minutes_per_day: 240
       earliest: "08:00"
@@ -25,17 +23,78 @@ targets:
       latest_end: "17:00"
       minutes: 240
       min_minutes: 120
-      step_minutes: 15
-    items:
-      prefer: []
-      exclude: []
 
   - name: kc-group-rooms
-    enabled: false
     priority: 2
     location: Chancellor Oppenheimer Library
     category: Knowledge Commons Group Study Rooms
     rules:
+      window_days: 9
+      max_minutes_per_day: 240
+      earliest: "08:00"
+      latest: "22:00"
+    want:
+      minutes: 120
+      min_minutes: 60
+
+  - name: research-commons-seminar
+    priority: 3
+    location: Chancellor Oppenheimer Library
+    category: Seminar Room
+    rules:
+      window_days: 9
+      max_minutes_per_day: 240
+      earliest: "08:00"
+      latest: "22:00"
+    want:
+      minutes: 120
+      min_minutes: 60
+
+  - name: business-corner
+    priority: 4
+    location: Chancellor Oppenheimer Library
+    category: Business Corner (on-campus)
+    rules:
+      window_days: 9
+      max_minutes_per_day: 240
+      earliest: "08:00"
+      latest: "19:30"
+    want:
+      minutes: 120
+      min_minutes: 60
+
+  - name: snape-lounge-rooms
+    priority: 5
+    location: Library Learning Lounges (Chris Hani and Snape)
+    category: Snape Library Learning Lounge Group Study Rooms
+    rules:
+      window_days: 9
+      max_minutes_per_day: 240
+      earliest: "08:00"
+      latest: "22:00"
+    want:
+      minutes: 120
+      min_minutes: 60
+
+  - name: chris-hani-training
+    priority: 6
+    location: Library Learning Lounges (Chris Hani and Snape)
+    category: Chris Hani Library Learning Lounge Training Facility
+    rules:
+      window_days: 9
+      max_minutes_per_day: 240
+      earliest: "08:00"
+      latest: "22:00"
+    want:
+      minutes: 120
+      min_minutes: 60
+
+  - name: lseg-workspace
+    priority: 7
+    location: Virtual Business Corner
+    category: LSEG Workspace
+    rules:
+      window_days: 9
       max_minutes_per_day: 240
       earliest: "08:00"
       latest: "19:30"
