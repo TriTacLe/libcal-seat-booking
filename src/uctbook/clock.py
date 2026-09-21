@@ -7,7 +7,7 @@ naive local timestamps; they are only meaningful against the library's zone.
 
 from __future__ import annotations
 
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime, time, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 LIBCAL_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -44,3 +44,12 @@ def combine(day: date, moment: time, tz: ZoneInfo) -> datetime:
 
 def days_from(day: date, count: int) -> date:
     return day + timedelta(days=count)
+
+
+def utc_now() -> datetime:
+    """For log lines and file names. Booking arithmetic uses the library zone."""
+    return datetime.now(timezone.utc)
+
+
+def stamp() -> str:
+    return utc_now().strftime("%Y%m%d-%H%M%S")

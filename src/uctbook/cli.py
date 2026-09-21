@@ -8,14 +8,19 @@ from pathlib import Path
 import httpx
 import typer
 from dotenv import load_dotenv
+from playwright.sync_api import sync_playwright
 
+from uctbook import auth
 from uctbook import catalogue as cat
 from uctbook.clock import today as today_in
 from uctbook.config import Config, TargetSpec, load_config
 from uctbook.libcal import GridQuery, LibCalError, ReadClient
 from uctbook.planner import choose, window_edge
+from uctbook.recon import Capture, account_secrets
 
 app = typer.Typer(add_completion=False, pretty_exceptions_show_locals=False)
+recon_app = typer.Typer(add_completion=False, help="Record the booking calls once, by hand.")
+app.add_typer(recon_app, name="recon")
 load_dotenv(Path(".env"), override=False)
 
 
@@ -172,6 +177,75 @@ def plan(
         raise typer.Exit(1)
     finally:
         client.close()
+
+
+@app.command()
+def login(
+    verbose: bool = typer.Option(False, "--verbose", "-v"),
+) -> None:
+    """Open a browser, sign in to UCT, and keep the session.
+
+    Records which hosts the sign-in passes through and which cookies each one
+    sets, so the automatic re-auth can be written against what actually happens
+    rather than a guess. Cookie values are never written down.
+    """
+    _logging(verbose)
+    with sync_playwright() as p:
+        browser = auth.launch(p, headless=False)
+        ctx = auth.new_context(browser)
+        page = ctx.new_page()
+        recorder = auth.ChainRecorder(page, ctx)
+        auth.goto_with_retry(page, auth.ENTRY_URL)
+
+        print("Sign in to UCT in the browser window, then come back here.")
+        print("Stop once LibCal shows you as signed in.")
+        input("Press Enter when you are done: ")
+
+        auth.save_session(ctx)
+        out = recorder.write()
+        signed_in = auth.is_authenticated(page)
+        auth.close_session(browser, ctx, page)
+
+    print(f"Session saved to {auth.STATE_FILE}")
+    print(f"Sign-in chain recorded in {out}")
+    if not signed_in:
+        print(
+            "Could not see a signed-in marker on the page. The session was still "
+            "saved; check the recorded page.html before relying on it.",
+            file=sys.stderr,
+        )
+
+
+@recon_app.command("capture")
+def recon_capture(
+    label: str = typer.Option("booking", "--label", "-l"),
+    verbose: bool = typer.Option(False, "--verbose", "-v"),
+) -> None:
+    """Record one real booking made by hand.
+
+    Make a short booking you actually want in the browser window. Every LibCal
+    call is written out with its request and response so the submit payload can
+    be implemented against evidence. Cancel it afterwards with the link in the
+    confirmation mail if you no longer want it.
+    """
+    _logging(verbose)
+    with sync_playwright() as p:
+        browser = auth.launch(p, headless=False)
+        ctx = auth.new_context(browser)
+        page = ctx.new_page()
+        capture = Capture(page, account_secrets())
+        auth.goto_with_retry(page, auth.ENTRY_URL)
+
+        print("Make one short booking in the browser window.")
+        print("Go all the way to the confirmation page.")
+        input("Press Enter once the booking is confirmed: ")
+
+        auth.save_session(ctx)
+        out = capture.write(label)
+        auth.close_session(browser, ctx, page)
+
+    print(f"Captured {len(capture.calls)} call(s) into {out}")
+    print(f"Read {out / 'summary.md'} for the call sequence.")
 
 
 if __name__ == "__main__":

@@ -54,3 +54,33 @@ LibCal sends naive timestamps that mean wall-clock time in Africa/Johannesburg, 
 conversion. South Africa has no DST, so the library side never shifts, but a machine in Europe
 does. Every wall-clock read goes through `clock.py`, and a test fails the build if that stops
 being true. Timers are scheduled in UTC for the same reason.
+
+## Signing in
+
+```bash
+uv run playwright install chromium
+uv run uct login
+```
+
+A browser opens on the LibCal booking page. Sign in to UCT there, then press Enter in the
+terminal. The session is saved to `data/storage_state.json` and reused after that.
+
+`login` also writes the sign-in chain to `data/debug/<timestamp>-login/chain.json`: which hosts
+it passed through and which cookies each one set, names and flags only, never values. That
+recording is what automatic re-authentication gets built from.
+
+## Recording the booking calls
+
+The submit endpoint is the one part of the flow that cannot be read off the public site, so it
+is captured once from a real booking:
+
+```bash
+uv run uct recon capture --label first
+```
+
+Make a short booking you actually want, go through to the confirmation page, then press Enter.
+Every LibCal call lands in `data/recon/<timestamp>-first/` with request and response bodies,
+minus anything identifying the account. `summary.md` in that directory lists the call sequence.
+
+`data/recon/` and `data/debug/` are gitignored. Only a reviewed, redacted capture should ever
+be promoted into `tests/fixtures/`.
