@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- iid: 470 -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            
+    <link href="https://static-assets-us.libcal.com/bootstrap_16/bootstrap3_16.min.css" rel="stylesheet">
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://static-assets-us.libcal.com/css_129/LibCal_public.min.css" rel="stylesheet">
+    <link href="https://static-assets-us.libcal.com/css_129/print.min.css" rel="stylesheet" media="print">
+    
+<script src="https://static-assets-us.libcal.com/jquery_16/jquery.min.js"></script>
+
+
+<script src="https://static-assets-us.libcal.com/bootstrap_16/bootstrap3.min.js"></script>
+    <script src="https://static-assets-us.libcal.com/js_129/LibCal_public.min.js"></script>
+        <script>
+    springSpace.dateFormat = "dddd D MMMM YYYY";
+    springSpace.dateShortFormat = "D MMMM, YYYY";
+    springSpace.timeFormat = "h:mma";
+    springSpace.timezone = 'Africa/Johannesburg';
+    springSpace.currency = "USD";
+
+    springSpace.language = 'en'; // en
+    springSpace.locale = 'en-US'; // en-US
+
+    springSpace.phpTimeFormat = 'g:ia';
+
+    springSpace.bootstrapAsset = 'https://static-assets-us.libcal.com/bootstrap_16/bootstrap3_16.min.css';
+    springSpace.publicCssAsset = 'https://static-assets-us.libcal.com/css_129/LibCal_public.min.css';
+    springSpace.adminCssAsset = 'https://static-assets-us.libcal.com/css_129/LibCal_admin.min.css';
+</script>
+        <title>
+                    New Reservation -
+                UCT Libraries on LibCal -
+        University of Cape Town
+    </title>
+    <style>
+            #s-lc-public-banner {
+            padding: 0;
+            margin: 0;
+        }
+
+        .s-lc-public-footer {
+            margin: 0;
+        }
+    </style>
+            <style type/css>
+h1#s-la-public-header-title {
+    font-size: 28px;
+    font-weight: lighter;
+    letter-spacing: 0.03em;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #3b5ca2;
+    border-color: #3b5ca2;
+}
+a{
+    color: #337ab7;
+}   
+</style>
+</head>
+<body id="new_reservation" class="s-lc-public s-lc-public-page-5">
+
+
+<a id="s-lc-public-skiplink" class="s-lc-skiplink alert-info" href="#s-lc-public-title-area">Skip to Main Content</a>
+
+
+<div class="container">
+            <div id="s-lc-public-banner" class="row s-lc-public-banner" role="banner">
+            <a href="http://www.lib.uct.ac.za/">
+                <img loading="lazy" alt="University of Cape Town UCT Libraries on LibCal" class="img-responsive" id="s-lc-public-banner-img" src="https://d68g328n4ug0e.cloudfront.net/data/headers/470/Libapps-banner-2020.png" />
+                <span class="sr-only">University of Cape Town UCT Libraries on LibCal</span>
+            </a>
+        </div>
+    
+    <div id="s-lc-public-bc" class="row">
+        <div class="col-md-12">
+            <nav aria-label="Breadcrumb">
+                <ol class="breadcrumb">
+                    <li><a href="http://www.lib.uct.ac.za/">University of Cape Town</a></li>
+
+                    <li class="s-lc-desktop-only"><a href="https://uct.ac.za.libcal.com" >UCT Libraries on LibCal</a></li>
+
+                                            <li><a href="/r" >Seat &amp; Space Bookings</a></li>
+                    
+                                            <li class="active s-lc-desktop-only" aria-current="page">New Reservation</li>
+                    
+                                        </ol>
+            </nav>
+        </div>
+    </div>
+
+    <noscript>
+        <div class="alert alert-danger" id="noscript">Your browser has javascript disabled. Without javascript some functions will not work.</div>
+    </noscript>
+
+    <main aria-label="Main Content">
+        <div id="s-lc-public-title-area">
+                                                <div id="s-lc-public-title" class="row">
+                        <div class="col-md-12">
+                            <h1 id="s-lc-public-pt">New Reservation</h1>
+                        </div>
+                    </div>
+                
+                                    </div>
+
+            <div id="s-lc-public-main" class="s-lc-public-main">
+        <div id="s-lc-public-page-content" class="row">
+            <div id="col1" class="col-md-12 center">
+
+                
+                <form id="s-lc-new-reservation-form" class="form-horizontal" role="search" method="get" action="/r/new/availability" autocomplete="off">
+                    <div class="form-group " id="s-lc-location_container">
+            <label id="s-lc-location_fi_label" class="col-md-3 control-label" for="s-lc-location">
+            Location
+            
+                    </label>
+    
+    <div class="col-md-8">            <select
+        id="s-lc-location"
+        name="lid"
+        class="form-control "
+        title=""
+        required="required"                                            >
+            
+
+    <option value="" selected="selected">Select a Location</option>
+
+
+
+
+
+
+                <option value="5154">Chancellor Oppenheimer Library
+
+
+</option>
+                    <option value="7465">Library Learning Lounges (Chris Hani and Snape)
+
+
+</option>
+                    <option value="9445">Virtual Business Corner
+
+
+</option>
+    
+
+    </select>
+
+        
+        
+    </div>
+    </div>
+
+                    <div class="form-group " id="s-lc-zone_container">
+            <label id="s-lc-zone_fi_label" class="col-md-3 control-label" for="s-lc-zone">
+            Zone
+            
+                    </label>
+    
+    <div class="col-md-8">            <select
+        id="s-lc-zone"
+        name="zone"
+        class="form-control "
+        title=""
+                                                    >
+            
+    <option value="0" selected="selected">Show All</option>
+
+    
+
+
+
+
+
+
+
+
+    </select>
+
+        
+        
+    </div>
+    </div>
+
+                    <div class="form-group " id="s-lc-group_container">
+            <label id="s-lc-group_fi_label" class="col-md-3 control-label" for="s-lc-group">
+            Category
+            
+                    </label>
+    
+    <div class="col-md-8">            <select
+        id="s-lc-group"
+        name="gid"
+        class="form-control "
+        title=""
+                                                    >
+            
+    <option value="0" selected="selected">Show All</option>
+
+    
+
+
+
+
+
+
+
+
+    </select>
+
+        
+        
+    </div>
+    </div>
+
+                    <div class="form-group " id="s-lc-type_container">
+            <label id="s-lc-type_fi_label" class="col-md-3 control-label" for="s-lc-type">
+            Capacity
+            
+                    </label>
+    
+    <div class="col-md-8">            <select
+        id="s-lc-type"
+        name="capacity"
+        class="form-control "
+        title=""
+        required="required"                                            >
+            
+
+    <option value="" selected="selected">Select the capacity</option>
+
+
+
+
+
+
+
+
+    </select>
+
+        
+        
+    </div>
+    </div>
+
+                    
+                                            <div id="s-lc-search-filters-container" class="form-group">
+                            <fieldset>
+                                <legend class="col-md-3 control-label s-lc-legend-label">
+                                    Filters
+                                </legend>
+
+                                <div class="col-md-8">
+                                                                            <div class="margin-bottom-none">
+                                            
+<label class="checkbox checkbox-inline s-lc-search-filter-checkbox" for="filter-5005">
+    <input type="checkbox" id="filter-5005" name="filters[]" class="s-lc-checkbox-alignment-fix" value="5005">
+    <i class="fa fa-wheelchair-alt" aria-hidden="true"></i>
+    Accessible Seat/Space
+</label>
+                                        </div>
+                                                                            <div class="">
+                                            
+<label class="checkbox checkbox-inline s-lc-search-filter-checkbox" for="filter-5006">
+    <input type="checkbox" id="filter-5006" name="filters[]" class="s-lc-checkbox-alignment-fix" value="5006">
+    <i class="fa fa-plug" aria-hidden="true"></i>
+    Power Available
+</label>
+                                        </div>
+                                                                    </div>
+                            </fieldset>
+                        </div>
+                    
+                    <div class="form-group " id="s-lc-go_container">
+            <div class="col-md-offset-3 col-md-8">
+    
+        <button class="btn btn-primary" type="submit" id="s-lc-go">
+            Show Availability
+        </button>
+
+        
+        
+            </div>
+    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </main>
+
+    <footer id="s-lc-public-footer" class="row s-lc-public-footer">
+        <div id="s-lc-public-footer-brand">
+    <span title="libcal-us-5">Powered by</span> <a href="https://www.springshare.com" class="s-lc-link-in-text">Springshare</a>.
+</div>
+
+<div id="s-lc-public-footer-rights">
+    All rights reserved.
+</div>
+
+    <div id="s-lc-footer-support-link">
+        <a href="mailto:lib-webmaster@uct.ac.za">Report a tech support issue.</a>
+    </div>
+
+                
+        <div id="s-lc-public-footer-admin-links" role="navigation" aria-label="Admin Footer">
+                            <a id="s-lc-sign-in" href="https://uct-ac-za.libapps.com/libapps/login.php?site_id=4308&amp;target=">Login to LibApps</a>
+                    </div>
+
+        <div class="s-lc-public-footer-actions">
+    
+<div id="s-lc-language">
+    <select id="s-lc-language-selector" aria-label="Select Language">
+                <option value="ca" >català</option>
+                <option value="cy" >Cymraeg</option>
+                <option value="en" selected>English</option>
+                <option value="es" >español</option>
+                <option value="fr" >français</option>
+                <option value="ga" >Irish</option>
+                <option value="ja" >日本語 Nihongo</option>
+                <option value="nl" >Nederlands</option>
+                <option value="sl" >slovenski jezik</option>
+                <option value="vi" >Tiếng Việt</option>
+                <option value="zh" >中文 Zhōngwén</option>
+            </select>
+</div>
+</div>
+    </footer>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-176915552-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-176915552-1');
+</script>
+
+</div>
+
+
+            <script>
+            var springyPage = {
+                locationIdsUsingPeriodBookings: [],
+                zoneIdNameModelsByLocationId: {"7465":[{"id":13276,"name":"Snape Library Learning Lounge"},{"id":13277,"name":"Chris Hani Library Learning Lounge"}],"5154":[{"id":7304,"name":"Vincent Kolbe Knowledge Commons"},{"id":7642,"name":"Research Wing, Jagger Level 5"},{"id":8087,"name":"Research Commons"}]},
+                groupIdNameModelsByLocationId: {"5154":[{"id":13236,"name":"Knowledge Commons Group Study Rooms "},{"id":13265,"name":"Business Corner (on-campus)"},{"id":13879,"name":"Seminar Room"},{"id":33215,"name":"Knowledge Commons Computers "}],"9445":[{"id":17272,"name":"LSEG Workspace "}],"7465":[{"id":13264,"name":"Snape Library Learning Lounge Group Study Rooms "},{"id":53326,"name":"Chris Hani Library Learning Lounge Training Facility "}]},
+                groupIdNameModelsByLocationAndZone: {"5154":{"7304":[{"id":13236,"name":"Knowledge Commons Group Study Rooms "},{"id":33215,"name":"Knowledge Commons Computers "}],"7642":[{"id":13265,"name":"Business Corner (on-campus)"}],"8087":[{"id":13879,"name":"Seminar Room"}],"-1":[{"id":13236,"name":"Knowledge Commons Group Study Rooms "},{"id":13265,"name":"Business Corner (on-campus)"},{"id":13879,"name":"Seminar Room"},{"id":33215,"name":"Knowledge Commons Computers "}]},"9445":{"0":[{"id":17272,"name":"LSEG Workspace "}],"-1":[{"id":17272,"name":"LSEG Workspace "}]},"15967":{"0":[{"id":47581,"name":"LAB"}],"-1":[{"id":47581,"name":"LAB"}]},"7465":{"13276":[{"id":13264,"name":"Snape Library Learning Lounge Group Study Rooms "}],"13277":[{"id":53326,"name":"Chris Hani Library Learning Lounge Training Facility "}],"-1":[{"id":13264,"name":"Snape Library Learning Lounge Group Study Rooms "},{"id":53326,"name":"Chris Hani Library Learning Lounge Training Facility "}]}},
+                capacityIdNameModelsByLocationZoneAndGroup: {"5154":{"7304":{"13236":[{"id":1,"name":"Space For 2-6 people"}],"33215":[{"id":-1,"name":"Single Seat Booking"}],"0":[{"id":-1,"name":"Single Seat Booking"},{"id":1,"name":"Space For 2-6 people"}]},"7642":{"13265":[{"id":-1,"name":"Single Seat Booking"}],"0":[{"id":-1,"name":"Single Seat Booking"}]},"8087":{"13879":[{"id":2,"name":"Space For 1-7 people"}],"0":[{"id":2,"name":"Space For 1-7 people"}]},"0":{"0":[{"id":-1,"name":"Single Seat Booking"},{"id":1,"name":"Space For 2-6 people"},{"id":2,"name":"Space For 1-7 people"}],"13236":[{"id":1,"name":"Space For 2-6 people"}],"33215":[{"id":-1,"name":"Single Seat Booking"}],"13265":[{"id":-1,"name":"Single Seat Booking"}],"13879":[{"id":2,"name":"Space For 1-7 people"}]}},"7465":{"13276":{"13264":[{"id":3,"name":"Space For 2-10 people"}],"0":[{"id":3,"name":"Space For 2-10 people"}]},"13277":{"53326":[{"id":3,"name":"Space For 2-10 people"}],"0":[{"id":3,"name":"Space For 2-10 people"}]},"0":{"0":[{"id":3,"name":"Space For 2-10 people"}],"13264":[{"id":3,"name":"Space For 2-10 people"}],"53326":[{"id":3,"name":"Space For 2-10 people"}]}},"9445":[{"0":[{"id":1,"name":"Space For 2-6 people"}],"17272":[{"id":1,"name":"Space For 2-6 people"}]}]},
+                itemIdNameModelsByLocationCapacityZoneAndGroup: {"5154":{"1":{"7304":{"13236":[{"id":50959,"name":"Room 1 (2 - 6 people) - Group Study"},{"id":50967,"name":"Room 2 (2 - 6 people) - Group Study"},{"id":50968,"name":"Room 3 (2 - 6 people) - Group Study"},{"id":50970,"name":"Room 4 (4 people only) - Silent Study"},{"id":138081,"name":"Room 8 (2 - 6 people) - Group Study [No PC available]"},{"id":138082,"name":"Room 9 (4 people only) - Silent Study [No PC available]"},{"id":138290,"name":"Room 6 (2 - 6 people) - Group Study"},{"id":138291,"name":"Room 7 (2 - 6 people)  - Group Study"}],"0":[{"id":50959,"name":"Room 1 (2 - 6 people) - Group Study"},{"id":50967,"name":"Room 2 (2 - 6 people) - Group Study"},{"id":50968,"name":"Room 3 (2 - 6 people) - Group Study"},{"id":50970,"name":"Room 4 (4 people only) - Silent Study"},{"id":138081,"name":"Room 8 (2 - 6 people) - Group Study [No PC available]"},{"id":138082,"name":"Room 9 (4 people only) - Silent Study [No PC available]"},{"id":138290,"name":"Room 6 (2 - 6 people) - Group Study"},{"id":138291,"name":"Room 7 (2 - 6 people)  - Group Study"}]},"0":{"13236":[{"id":50959,"name":"Room 1 (2 - 6 people) - Group Study"},{"id":50967,"name":"Room 2 (2 - 6 people) - Group Study"},{"id":50968,"name":"Room 3 (2 - 6 people) - Group Study"},{"id":50970,"name":"Room 4 (4 people only) - Silent Study"},{"id":138081,"name":"Room 8 (2 - 6 people) - Group Study [No PC available]"},{"id":138082,"name":"Room 9 (4 people only) - Silent Study [No PC available]"},{"id":138290,"name":"Room 6 (2 - 6 people) - Group Study"},{"id":138291,"name":"Room 7 (2 - 6 people)  - Group Study"}],"0":[{"id":50959,"name":"Room 1 (2 - 6 people) - Group Study"},{"id":50967,"name":"Room 2 (2 - 6 people) - Group Study"},{"id":50968,"name":"Room 3 (2 - 6 people) - Group Study"},{"id":50970,"name":"Room 4 (4 people only) - Silent Study"},{"id":138081,"name":"Room 8 (2 - 6 people) - Group Study [No PC available]"},{"id":138082,"name":"Room 9 (4 people only) - Silent Study [No PC available]"},{"id":138290,"name":"Room 6 (2 - 6 people) - Group Study"},{"id":138291,"name":"Room 7 (2 - 6 people)  - Group Study"}]}},"-1":{"7642":{"13265":[{"id":136288,"name":"Bloomberg Terminals"}],"0":[{"id":136288,"name":"Bloomberg Terminals"}]},"0":{"13265":[{"id":136288,"name":"Bloomberg Terminals"}],"0":[{"id":136288,"name":"Bloomberg Terminals"},{"id":131384,"name":"KC Computers"}],"33215":[{"id":131384,"name":"KC Computers"}]},"7304":{"33215":[{"id":131384,"name":"KC Computers"}],"0":[{"id":131384,"name":"KC Computers"}]}},"2":{"8087":{"13879":[{"id":53436,"name":"Research Commons Seminar Room"}],"0":[{"id":53436,"name":"Research Commons Seminar Room"}]},"0":{"13879":[{"id":53436,"name":"Research Commons Seminar Room"}],"0":[{"id":53436,"name":"Research Commons Seminar Room"}]}}},"7465":{"3":{"13276":{"13264":[{"id":51075,"name":"Group Study Room 1 (2 - 8 people)"},{"id":51076,"name":"Group Study Room 2 (2 - 8 people)"},{"id":51077,"name":"Group Study Room 3 (2 - 8 people)"},{"id":51078,"name":"Group Study Room 4 (2 - 8 people)"},{"id":51079,"name":"Group Study Room 5 (2 - 8 people)"}],"0":[{"id":51075,"name":"Group Study Room 1 (2 - 8 people)"},{"id":51076,"name":"Group Study Room 2 (2 - 8 people)"},{"id":51077,"name":"Group Study Room 3 (2 - 8 people)"},{"id":51078,"name":"Group Study Room 4 (2 - 8 people)"},{"id":51079,"name":"Group Study Room 5 (2 - 8 people)"}]},"0":{"13264":[{"id":51075,"name":"Group Study Room 1 (2 - 8 people)"},{"id":51076,"name":"Group Study Room 2 (2 - 8 people)"},{"id":51077,"name":"Group Study Room 3 (2 - 8 people)"},{"id":51078,"name":"Group Study Room 4 (2 - 8 people)"},{"id":51079,"name":"Group Study Room 5 (2 - 8 people)"}],"0":[{"id":51075,"name":"Group Study Room 1 (2 - 8 people)"},{"id":51076,"name":"Group Study Room 2 (2 - 8 people)"},{"id":51077,"name":"Group Study Room 3 (2 - 8 people)"},{"id":51078,"name":"Group Study Room 4 (2 - 8 people)"},{"id":51079,"name":"Group Study Room 5 (2 - 8 people)"},{"id":236264,"name":"Training Facility (2 - 10 people)"}],"53326":[{"id":236264,"name":"Training Facility (2 - 10 people)"}]},"13277":{"53326":[{"id":236264,"name":"Training Facility (2 - 10 people)"}],"0":[{"id":236264,"name":"Training Facility (2 - 10 people)"}]}}},"9445":{"1":[{"17272":[{"id":66840,"name":"Workspace Virtual Terminal 1"},{"id":66841,"name":"Workspace Virtual Terminal 2"},{"id":67299,"name":"Workspace Virtual Terminal 3"}],"0":[{"id":66840,"name":"Workspace Virtual Terminal 1"},{"id":66841,"name":"Workspace Virtual Terminal 2"},{"id":67299,"name":"Workspace Virtual Terminal 3"}]}]}},
+                showAllText: 'Show\u0020All',
+                selectCategoryText: 'Select\u0020Category',
+                selectCapacityText: 'Select\u0020the\u0020capacity',
+            };
+        </script>
+        <script defer src="https://static-assets-us.libcal.com/js_129/direct/public/equipment/new-reservation.min.js"></script>
+
+
+
+<div id="s-lc-privacy-statement" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                <h2 class="modal-title">
+                    Privacy Statement
+                </h2>
+            </div>
+
+            <div class="modal-body">
+                <p>To use this platform, the system writes one or more cookies in your browser. These cookies are not shared with any third parties. In addition, your IP address and browser information is stored in server logs and used to generate anonymised usage statistics. Your institution uses these statistics to gauge the use of library content, and the information is not shared with any third parties. Please read the <a href="https://uct.ac.za/media/7885" target="_blank">Privacy Notice for UCT websites</a>.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    springSpace.cookieConsent.alert({
+        okay: "OK",
+        placement: "bottom",
+        consent_message: "This site uses cookies and stores your IP address for usage statistics. <a href='#' id='s-ui-cc-read-more-link'>Read\u0020More</a>",
+        read_more_callback: function () {
+            jQuery("#s-lc-privacy-statement").springshareModal("show");
+        }
+    });
+</script>
+
+
+</body>
+</html>

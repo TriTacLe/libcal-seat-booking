@@ -1,0 +1,52 @@
+timezone: Africa/Johannesburg
+catalogue: data/catalogue.yaml
+state: data/state.json
+
+account:
+  username: student@myuct.ac.za
+
+targets:
+  - name: kc-computers
+    priority: 1
+    location: Chancellor Oppenheimer Library
+    zone: Vincent Kolbe Knowledge Commons
+    category: Knowledge Commons Computers
+    capacity: Single Seat Booking
+    filters: [5005, 5006]
+    rules:
+      slot_minutes: 5
+      window_days: 14
+      max_minutes_per_day: 240
+      earliest: "08:00"
+      latest: "19:30"
+    want:
+      weekdays: [mon, tue, wed, thu, fri, sat]
+      earliest_start: "09:00"
+      latest_end: "17:00"
+      minutes: 240
+      min_minutes: 120
+      step_minutes: 15
+    items:
+      prefer: []
+      exclude: []
+
+  - name: kc-group-rooms
+    enabled: false
+    priority: 2
+    location: Chancellor Oppenheimer Library
+    category: Knowledge Commons Group Study Rooms
+    rules:
+      max_minutes_per_day: 240
+      earliest: "08:00"
+      latest: "19:30"
+    want:
+      minutes: 120
+      min_minutes: 60
+
+checkin:
+  enabled: true
+  offset_minutes: 1
+
+notifications:
+  gmail:
+    extra_to: []

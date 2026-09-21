@@ -1,0 +1,1 @@
+lid=5154&gid=33215&eid=-1&seat=1&seatId=0&zone=7304&filters%5B%5D=5005&filters%5B%5D=5006&start=2026-10-05&end=2026-10-06&pageIndex=0&pageSize=18

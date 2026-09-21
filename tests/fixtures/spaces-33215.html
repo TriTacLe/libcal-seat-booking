@@ -1,0 +1,2809 @@
+                                    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- iid: 470 -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            
+    <link href="https://static-assets-us.libcal.com/bootstrap_16/bootstrap3_16.min.css" rel="stylesheet">
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://static-assets-us.libcal.com/css_129/LibCal_public.min.css" rel="stylesheet">
+    <link href="https://static-assets-us.libcal.com/css_129/print.min.css" rel="stylesheet" media="print">
+    
+<script src="https://static-assets-us.libcal.com/jquery_16/jquery.min.js"></script>
+
+
+<script src="https://static-assets-us.libcal.com/bootstrap_16/bootstrap3.min.js"></script>
+    <script src="https://static-assets-us.libcal.com/js_129/LibCal_public.min.js"></script>
+        <script>
+    springSpace.dateFormat = "dddd D MMMM YYYY";
+    springSpace.dateShortFormat = "D MMMM, YYYY";
+    springSpace.timeFormat = "h:mma";
+    springSpace.timezone = 'Africa/Johannesburg';
+    springSpace.currency = "USD";
+
+    springSpace.language = 'en'; // en
+    springSpace.locale = 'en-US'; // en-US
+
+    springSpace.phpTimeFormat = 'g:ia';
+
+    springSpace.bootstrapAsset = 'https://static-assets-us.libcal.com/bootstrap_16/bootstrap3_16.min.css';
+    springSpace.publicCssAsset = 'https://static-assets-us.libcal.com/css_129/LibCal_public.min.css';
+    springSpace.adminCssAsset = 'https://static-assets-us.libcal.com/css_129/LibCal_admin.min.css';
+</script>
+        <title>
+                                        Seat Availability
+             -
+                UCT Libraries on LibCal -
+        University of Cape Town
+    </title>
+    <style>
+            #s-lc-public-banner {
+            padding: 0;
+            margin: 0;
+        }
+
+        .s-lc-public-footer {
+            margin: 0;
+        }
+    </style>
+        <link rel="stylesheet" href="https://static-assets-us.libcal.com/fullcalendar_16/fullcalendar.min.css"/>
+
+    <style>
+    .s-lc-eq-avail, .label-eq-avail, .s-lc-eq-period-available {
+        background: #14951f none !important;
+border-color: #14951f !important;
+    }
+
+    .s-lc-eq-avail:hover, .s-lc-eq-period-available:hover {
+        background: #095212 none !important;
+border-color: #095212 !important;
+    }
+
+    .s-lc-eq-pending, .label-eq-pending, .s-lc-eq-period-pending {
+        background: #F59F16 none !important;
+border-color: #F59F16 !important;
+    }
+
+    .s-lc-eq-checkout, .s-lc-eq-r-unavailable, .s-lc-eq-r-padding, .label-eq-unavailable, .s-lc-eq-period-booked {
+        background: #c91908 none !important;
+border-color: #c91908 !important;
+    }
+</style>
+
+    <style>
+        /* The below styles allow for scrolling of the space resource columns on the time grid */
+        #time_grid_cont .fc-scroller-harness:has(> .fc-scroller > table.fc-datagrid-body) {
+            overflow-x: auto;
+        }
+
+        #time_grid_cont .fc-scroller-harness:has(> .fc-scroller > table.fc-datagrid-body) > .fc-scroller {
+         min-width: max-content !important;
+        }
+
+        #time_grid_cont table.fc-datagrid-body {
+            table-layout: auto !important;
+            min-width: max-content !important;
+        }
+
+        #time_grid_cont table.fc-datagrid-body .fc-datagrid-cell-cushion {
+            overflow: visible;
+        }
+    </style>
+    <style type/css>
+h1#s-la-public-header-title {
+    font-size: 28px;
+    font-weight: lighter;
+    letter-spacing: 0.03em;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #3b5ca2;
+    border-color: #3b5ca2;
+}
+a{
+    color: #337ab7;
+}   
+</style>
+</head>
+<body id="equip_" class="s-lc-public s-lc-public-page-5">
+
+        <a class="s-lc-skiplink alert-info" href="/r/accessible?lid=5154&gid=33215">
+        Alternate page for screen reader Users
+    </a>
+
+<a id="s-lc-public-skiplink" class="s-lc-skiplink alert-info" href="#s-lc-public-title-area">Skip to Main Content</a>
+
+
+<div class="container">
+            <div id="s-lc-public-banner" class="row s-lc-public-banner" role="banner">
+            <a href="http://www.lib.uct.ac.za/">
+                <img loading="lazy" alt="University of Cape Town UCT Libraries on LibCal" class="img-responsive" id="s-lc-public-banner-img" src="https://d68g328n4ug0e.cloudfront.net/data/headers/470/Libapps-banner-2020.png" />
+                <span class="sr-only">University of Cape Town UCT Libraries on LibCal</span>
+            </a>
+        </div>
+    
+    <div id="s-lc-public-bc" class="row">
+        <div class="col-md-12">
+            <nav aria-label="Breadcrumb">
+                <ol class="breadcrumb">
+                    <li><a href="http://www.lib.uct.ac.za/">University of Cape Town</a></li>
+
+                    <li class="s-lc-desktop-only"><a href="https://uct.ac.za.libcal.com" >UCT Libraries on LibCal</a></li>
+
+                    
+                                            <li class="active s-lc-desktop-only" aria-current="page">                    Seat Availability
+            </li>
+                    
+                                        </ol>
+            </nav>
+        </div>
+    </div>
+
+    <noscript>
+        <div class="alert alert-danger" id="noscript">Your browser has javascript disabled. Without javascript some functions will not work.</div>
+    </noscript>
+
+    <main aria-label="Main Content">
+        <div id="s-lc-public-title-area">
+                            
+                                    </div>
+
+            <div id="s-lc-public-main" class="s-lc-public-main">
+        <div id="s-lc-public-page-content" class="row">
+            
+            <div id="col1" class="col-md-12 center" >
+                                    <div id="s-lc-eq-navform" class="s-lc-spaces-setup-info">
+                        <h1 class="sr-only">                    Seat Availability
+            </h1>
+
+                        
+                        <div class="form-inline" role="search">
+                            <input type="hidden" name="page" id="page" value="1">
+                            <input type="hidden" name="type" id="type" value="2">
+
+                                                            <div class="form-group form-group-sm">
+                                    <label class="hidden-sm" for="lid">Location</label>
+                                    <select class="form-control" name="lid" id="lid" aria-label="Location">
+                                        
+                                                                                    <option value="5154" selected="selected">Chancellor Oppenheimer Library</option>
+
+                                                                                                                                <option value="7465" >Library Learning Lounges (Chris Hani and Snape)</option>
+
+                                                                                                                                <option value="9445" >Virtual Business Corner</option>
+
+                                                                                    
+                                                                            </select>
+                                </div>
+                                                                <div class="form-group form-group-sm">
+                                    <label class="hidden-sm" for="gid">Category</label>
+                                    <select class="form-control" name="gid" id="gid" aria-label="Category">
+                                                                                    <option value="13236" >Knowledge Commons Group Study Rooms </option>
+                                                                                    <option value="13265" >Business Corner (on-campus)</option>
+                                                                                    <option value="13879" >Seminar Room</option>
+                                                                                    <option value="33215" selected="selected">Knowledge Commons Computers </option>
+                                        
+                                                                                    <option value="0" >Show All</option>
+                                                                            </select>
+                                </div>
+                                                            
+                            <div class="form-group form-group-sm">
+                                <label class="hidden-sm" for="capacity">
+                                    Capacity
+                                </label>
+
+                                <select class="form-control" name="capacity" id="capacity" aria-label="Capacity">
+                                    
+                                    
+                                                                            <option
+                                            value="-1"
+                                            selected="selected"                                        >
+                                            Single Seat Booking
+                                        </option>
+                                    
+                                                                    </select>
+                            </div>
+
+                                                     </div>
+                    </div>
+                
+                
+                                    <div id="s-lc-group-description" role="region" aria-label="description" class="s-lc-resource-description s-lc-spaces-setup-info">
+                        <div class="container">
+<h1 class="text-center"><strong><span style="font-family:Arial,Helvetica,sans-serif;">VINCE</span>NT KOLBE KNOWLEDGE COMMONS </strong></h1>
+</div>
+
+<p>&nbsp;</p>
+
+<div class="container">
+<div class="col-md-8"><img class="img-responsive" src="https://libapps.s3.amazonaws.com/accounts/184402/images/KC__image.png" /></div>
+
+<div class="col-md-3" style="background-color: #e9f0d8 ; padding: 15px;  border-radius: 25px">
+<p class="text-center" style="font-size:16px"><strong>Seat Booking Information </strong></p>
+
+<p class="text-justify" style="font-size:16px">Computers at the Vincent Kolbe Knowledge Commons can be booked for a <strong>maximum of 4 hours per day</strong>. This is to ensure equal access due to limited computers available.</p>
+
+<p class="text-justify" style="font-size:16px">You can <strong>check in 5 minutes </strong> before your booking start time</p>
+
+<p class="text-justify" style="font-size:16px">Please ensure that you leave promptly at the end of your time slot.</p>
+
+<p class="text-center" style="font-size:16px"><strong><span style="color:red">Your booking will be automatically cancelled after 15 minutes if you have not checked in.</span></strong></p>
+</div>
+</div>
+
+<p>&nbsp;</p>
+
+<p class="text-center" style="font-size:18px"><strong>The popular Vincent Kolbe Knowledge Commons, with it&#39;s high end computing, printing, copying and scanning facilities, is one-stop-shop where undergraduates can research, write up, and print out their assignments and essays.</strong></p>
+
+<div class="container">
+<div class="card z-depth-0 bordered">
+<div class="card-header" id="headingOne2">
+<h1 class="mb-0" style="font-size:20px"><button aria-controls="collapseOne2" aria-expanded="true" class="btn btn-primary btn-block" data-target="#collapseOne2" data-toggle="collapse" type="button"><strong>[+] Click here for Booking Instructions</strong></button></h1>
+</div>
+
+<div aria-labelledby="headingOne2" class="collapse" data-parent="#accordionExample275" id="collapseOne2">
+<div class="card-body">
+<p style="font-size:16px"><strong>1. Select a green available slot</strong></p>
+
+<p style="font-size:16px">The booking slot will change from green to yellow for the period selected (this is a temporary hold; the booking will be released after 3 minutes if you have not booked it by then). You can change the date by using the <em>Go to Date</em> or using the arrows. <em>You can only view seat availability two weeks in advance.</em></p>
+<img class="img-responsive" src="https://libapps.s3.amazonaws.com/accounts/184402/images/1.png" style="max-width: 40%" /> &nbsp;
+<p style="font-size:16px"><strong>2. Your booking will turn yellow and the slot will show at the button of the page</strong></p>
+
+<p style="font-size:16px">The default booking time is 2-hours, change your booking time using the drop-down arrows, i.e. if you would like to book for 1 hour instead of 2. You can book up to 4 hours, which do not have to be consecutive hours. Select the trash can to delete the booking.</p>
+<img class="img-responsive" src="https://libapps.s3.amazonaws.com/accounts/184402/images/2.png" style="max-width: 50%" /> &nbsp;
+<p style="font-size:16px"><strong>3. The info button shows seat information.</strong></p>
+
+<p style="font-size:16px">The seats are colour coded according to carrel i.e. CARREL 1: KC01 - KC06 is Orange</p>
+<img class="img-responsive" src="https://libapps.s3.amazonaws.com/accounts/184402/images/3.png" style="max-width: 50%" /> &nbsp;
+<p style="font-size:16px"><strong>4. Click </strong><img class="img-responsive" src="https://libapps.s3.amazonaws.com/accounts/184402/images/4.png" style="max-width: 40%" /></p>
+&nbsp;
+
+<p style="font-size:16px"><strong>5. Read the Terms and conditions and select. Please ensure that you have read everything. </strong><img class="img-responsive" src="https://libapps.s3.amazonaws.com/accounts/184402/images/5.png" style="max-width: 40%" /></p>
+&nbsp;
+
+<p style="font-size:16px"><strong>6. Fill in the booking form.</strong></p>
+
+<p><em>The personal information you provide on this form is being collected under the authority of the Protection of Personal Information Act of 2013. This information will be used to book library study rooms. If you have any questions about the collection and use of this information, please contact UCT Libraries. </em></p>
+<img class="img-responsive" src="https://libapps.s3.amazonaws.com/accounts/184402/images/6.png" style="max-width: 45%" /> &nbsp;
+<p style="font-size:16px"><strong>7. Confirmation email with check in code.</strong></p>
+
+<p style="font-size:16px">The email will contain the booking information, directions as well as the check in code and check out link if you finish early.</p>
+<img class="img-responsive" src="https://libapps.s3.amazonaws.com/accounts/184402/images/booking_confrim.png" style="max-width: 70%" /> &nbsp;
+<p style="font-size:16px"><strong>8.Add the ical link to your outlook or google calendar.</strong></p>
+<img class="img-responsive" src="https://libapps.s3.amazonaws.com/accounts/184402/images/ical.png" style="max-width: 40%" />&nbsp;
+<p style="font-size:16px"><strong>9. Scan the QR code at the Desk or computer and put in the check in code from your confirmation email. </strong></p>
+<img class="img-responsive" src="https://libapps.s3.amazonaws.com/accounts/184402/images/8.png" style="max-width: 15%" /></div>
+</div>
+</div>
+
+<div style="background-color: #FFF3CD ; padding: 15px;  border-radius: 25px">
+<p class="text-center" style="font-size:16px"><strong><span style="color:red">Bookings between 08:00am - 07:30pm are limited to a maximum 4 hours per person per day</span>, which do not have to be consecutive hours. </strong></p>
+
+<p class="text-center" style="font-size:17px"><strong><span style="color:green">Bookings are not required between 07:30pm - 08:00am</span></strong></p>
+
+<p class="text-center" style="font-size:16px"><strong>If your seat is unoccupied for 15 minutes your booking will be cancelled &ndash; e.g. If you have a 4-hour slot and leave for an hour, the remainder of your booking will be cancelled. </strong></p>
+</div>
+</div>
+
+                    </div>
+                
+                <div id="s-lc-window-limit-warning" class="alert alert-info margin-top-med margin-bottom-none" role="alert" style="display: none;">
+    You have reached the end of the bookable window. No availability will be shown past this point.
+</div>
+
+                <div id="time_grid_cont" class="s-lc-spaces-time-grid s-lc-spaces-setup-info" role="region" aria-label="Availability calendar" aria-describedby="s-lc-time-grid-desc" data-suppress-grid="true">
+                    <p id="s-lc-time-grid-desc" class="sr-only">Interactive availability calendar. Use the navigation buttons to browse dates. An accessible alternative is available below.</p>
+                        <div id="eq-time-grid">
+    </div>
+
+    <div id="s-lc-time-grid-pagination" class="s-lc-time-grid-pagination">
+    </div>
+
+    <div class="s-lc-time-grid-legend" id="eq-time-grid-legend">
+        <span class="label-eq-cont" data-toggle="tooltip" data-placement="top" title="Slot is available, click to book!"><span class="label label-eq-avail">&nbsp;&nbsp;</span> Available</span>
+<span class="label-eq-cont" data-toggle="tooltip" data-placement="top" title="Your pending booking."><span class="label label-eq-pending">&nbsp;&nbsp;</span> Your Booking</span>
+<span class="label-eq-cont" data-toggle="tooltip" data-placement="top" title="This slot is unavailable for starting a new booking. Bookings may occasionally extend into this slot."><span class="label label-eq-unavailable">&nbsp;&nbsp;</span> Unavailable/Padding</span>    </div>
+                </div>
+
+                <div id="s-lc-eq-form-box" class="s-lc-spaces-setup-info" style="display: none;" role="region" aria-label="booking form" aria-live="polite">
+                    <form id="s-lc-eq-form-times" class="form-horizontal" method="post" autocomplete="off">
+                        <fieldset>
+                            <div id="s-lc-eq-bwell" class="well" tabindex="0">&nbsp;</div>
+                            <div id="s-lc-eq-bform-inner" class="col-sm-offset-5">
+                                <button class="btn btn-primary" name="submit_times" id="submit_times">Submit Times</button>&nbsp;
+                                                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div id="s-lc-eq-form" style="clear:both; display: none;" role="region" aria-live="polite" aria-label="Booking details"></div>
+
+                <div id="s-lc-eq-errors" class="alert alert-danger" style="display: none;" role="region" aria-live="polite" aria-label="Error encountered"></div>
+
+                <div id="s-lc-eq-success" style="display: none;" role="region" aria-live="polite" aria-labelledby="s-lc-eq-success-title">
+                    <span id="s-lc-eq-success-title" class="sr-only">
+                        Success                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </main>
+
+    <footer id="s-lc-public-footer" class="row s-lc-public-footer">
+        <div id="s-lc-public-footer-brand">
+    <span title="libcal-us-5">Powered by</span> <a href="https://www.springshare.com" class="s-lc-link-in-text">Springshare</a>.
+</div>
+
+<div id="s-lc-public-footer-rights">
+    All rights reserved.
+</div>
+
+    <div id="s-lc-footer-support-link">
+        <a href="mailto:lib-webmaster@uct.ac.za">Report a tech support issue.</a>
+    </div>
+
+                <div id="s-lc-public-footer-print-link">
+        View this page in a format suitable for
+        <a href="/r/accessible?lid=5154&gid=33215" class="s-lc-link-in-text">
+            screen-readers and keyboard-only users
+        </a>
+    </div>
+
+        <div id="s-lc-public-footer-admin-links" role="navigation" aria-label="Admin Footer">
+                            <a id="s-lc-sign-in" href="https://uct-ac-za.libapps.com/libapps/login.php?site_id=4308&amp;target=">Login to LibApps</a>
+                    </div>
+
+        <div class="s-lc-public-footer-actions">
+    
+<div id="s-lc-language">
+    <select id="s-lc-language-selector" aria-label="Select Language">
+                <option value="ca" >català</option>
+                <option value="cy" >Cymraeg</option>
+                <option value="en" selected>English</option>
+                <option value="es" >español</option>
+                <option value="fr" >français</option>
+                <option value="ga" >Irish</option>
+                <option value="ja" >日本語 Nihongo</option>
+                <option value="nl" >Nederlands</option>
+                <option value="sl" >slovenski jezik</option>
+                <option value="vi" >Tiếng Việt</option>
+                <option value="zh" >中文 Zhōngwén</option>
+            </select>
+</div>
+</div>
+    </footer>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-176915552-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-176915552-1');
+</script>
+
+</div>
+
+
+                <script defer src="https://static-assets-us.libcal.com/fullcalendar_16/fullcalendar.min.js"></script>
+        <script defer src="https://static-assets-us.libcal.com/js_129/datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://static-assets-us.libcal.com/css_129/datepicker.min.css"/>
+
+    <script>
+    var springyFullCalendar = {
+        commonOptions: {
+            schedulerLicenseKey: '0391239527-fcs-1659132663',
+            now: '2026\u002D09\u002D21\u002016\u003A57',
+            nowIndicator: true,
+            scrollTime: '15\u003A00\u003A00',
+            lazyFetching: false,
+            locale: springSpace.language,
+            themeSystem: 'bootstrap',
+            eventTextColor: '#222',
+            eventDisplay: 'block',
+            eventOrder: 'start,duration,allDay,title', // https://fullcalendar.io/docs/eventOrder
+            moreLinkClick: 'day',
+            bootstrapFontAwesome: {
+                goToDate: 'fa-calendar',
+                goToNextAvailable: 'fa-fast-forward',
+                refresh: 'fa-refresh',
+            },
+            navLinks: true, // https://fullcalendar.io/docs/navLinks
+            resourceOrder: false, // https://fullcalendar.io/docs/resourceOrder
+            stickyHeaderDates: false, // https://fullcalendar.io/docs/stickyHeaderDates && https://github.com/springshare/LibCal/issues/11801
+            views: {
+                day: {
+                    dayHeaderFormat: 'dddd',
+                    titleFormat: springSpace.dateFormat,
+                },
+                week: {
+                    dayHeaderFormat: 'ddd\u0020D\u0020MMM',
+                    titleFormat: springSpace.dateFormat,
+                },
+                month: {
+                    titleFormat: 'MMMM\u0020YYYY',
+                    dayCellContent: function (info) {
+                        // regardless of language, show the day as a number with no extra characters
+                        return info.date.getDate();
+                    },
+                },
+            },
+        },
+        timelineOptions: {
+            height: 'auto',
+            refetchResourcesOnNavigate: false,
+            eventOverlap: false,
+            displayEventTime: false,
+            slotDuration: '00\u003A05',
+            titleFormat: springSpace.dateFormat,
+            views: {
+                timelineSingleDay: {
+                    type: 'resourceTimeline',
+                    buttonText: 'Day\u0020View',
+                    duration: {days: 1},
+                    slotLabelFormat: springSpace.timeFormat,
+                },
+                timelineHourlyShort: {
+                    type: 'resourceTimeline',
+                    duration: {days: 3},
+                    slotLabelFormat: [springSpace.dateFormat, springSpace.timeFormat],
+                },
+                timelineHourlyLong: {
+                    type: 'resourceTimeline',
+                    duration: {days: 7},
+                    slotLabelFormat: [springSpace.dateFormat, springSpace.timeFormat],
+                },
+                timelineDailyLong: {
+                    type: 'resourceTimeline',
+                    slotDuration: '24:00',
+                    duration: {days: 28},
+                    slotLabelFormat: ['dd D'],
+                    nowIndicator: false
+                },
+                resourceTimeGridWeek: {
+                    buttonText: 'Week\u0020View',
+                    slotLabelFormat: springSpace.timeFormat,
+                },
+            },
+        },
+        publicTexts: {
+            allDay: 'All\u0020Day',
+            available: 'Available',
+            dayGridMonth: 'Month',
+            dayGridWeek: 'Agenda',
+            goToDate: 'Go\u0020To\u0020Date',
+            goToNextAvailable: 'Next\u0020Available',
+            next: 'Next',
+            prev: 'Previous',
+            timeGridDay: 'Day',
+            timeGridWeek: 'Week',
+            today: 'Today',
+            unavailable: 'Unavailable\/Padding',
+            yourBooking: 'Your\u0020Booking',
+            listWeek: 'Week\u0020List',
+        },
+        adminTexts: {
+            goToDate: 'Go\u0020To\u0020Date',
+            refresh: 'Refresh',
+            prev: 'Previous',
+            next: 'Next',
+            today: 'Today',
+            week: 'Week',
+            month: 'Month',
+            day: 'Day',
+            dayGridWeek: 'Agenda',
+            allDay: 'All\u0020Day',
+            atLocation: '\u0025title\u0025\u0020at\u0020\u0025location\u0025',
+        },
+    };
+
+    // placeholder for dynamic content boxes with a full calendar
+    var calendarList = {};
+
+    function reRenderCalendarList() {
+        for (var calId in calendarList) {
+            calendarList[calId].render();
+        }
+    }
+</script>
+<script defer src="https://static-assets-us.libcal.com/js_129/direct/full-calendar-common.min.js"></script>
+        <script>
+        var springLang = {
+            eq_js_until_det: 'until...',
+            eq_js_rem_pending: 'Remove\u0020Pending\u0020Booking',
+            eq_js_cart_tt: 'Create\u0020a\u0020shopping\u0020cart\u0020with\u0020these\u0020space\u0020bookings,\u0020and\u0020go\u0020to\u0020equipment\u0020booking\u0020page\u0020to\u0020add\u0020more\u0020items\u0020to\u0020the\u0020cart.',
+            eq_js_isRequired: 'is\u0020required\u0021',
+        };
+    </script>
+
+    <script defer src="https://static-assets-us.libcal.com/js_129/direct/public/equipment/common.min.js"></script>
+    <script defer src="https://static-assets-us.libcal.com/js_129/direct/public/equipment/spaces.min.js"></script>
+    <script defer src="https://static-assets-us.libcal.com/js_129/direct/public/equipment/session.min.js"></script>
+    <script>
+        var pendingRoomBookings = [];
+        var pendingBookingNextId = 1;
+        var pendingBookingsBlowAwayCart = false;
+
+        function addError(msg, id) {
+            jQuery(".s-lc-eq-" + id).addClass("has-error").find(".form-control").attr("aria-invalid", true);
+            jQuery(".s-lc-eq-" + id).find(".s-lc-eq-flab").append('<div class="error-message">' + msg + "</div>");
+            jQuery("#" + id).focus();
+            return false;
+        }
+
+        function removeErrors() {
+            jQuery(".s-lc-eq-q").removeClass("has-error").find(".error-message").remove();
+        }
+
+        function agreeToTermsAndConditions() {
+            jQuery("#bform-terms-container").hide();
+            jQuery("#bform-form-container").show();
+
+            scrollAndFocusOnElement('#s-lc-bform-help');
+
+            return false;
+        }
+
+        function toggleSubmitButton() {
+            var isTermsAgreedTo = jQuery(this).is(':checked');
+            jQuery('#btn-form-submit').prop('disabled', !isTermsAgreedTo);
+        }
+
+        function preFormValidationAndPayload() {
+            removeErrors();
+            jQuery("#s-lc-eq-errors").hide();
+
+            if (!isVisibleFieldsValid()) {
+                return false;
+            }
+
+            if ((typeof customFormValidation === 'function') && !customFormValidation()) {
+                return false;
+            }
+
+            pageBusyBegin("#btn-form-submit");
+
+            var formElement = '#s-lc-eq-bform';
+            var bookings = preparePendingBookingsPayload();
+            var bookingsPayload = JSON.stringify(bookings);
+
+            springyCommon.appendHiddenInput('bookings', bookingsPayload, formElement);
+            springyCommon.appendHiddenInput('returnUrl', springySpaces.getReturnUrl(), formElement);
+            springyCommon.appendHiddenInput('pickupHolds', jQuery('#s-lc-pickup-holds').val(), formElement);
+            springyCommon.appendHiddenInput('method', springyPage.bookingMethod, formElement);
+
+            return true;
+        }
+
+        function bookingSuccessCallback(data) {
+            pageBusyEnd("#btn-form-submit");
+            if (data.error) {
+                jQuery("#s-lc-eq-errors").html(data.error).show();
+                return;
+            }
+
+            jQuery('#s-lc-eq-form, .s-lc-spaces-setup-info').hide();
+            jQuery('#s-lc-eq-success').html(data.html).show().focus();
+
+            springySession.clear();
+
+            return;
+        }
+
+        function bookingErrorCallback(xhr) {
+            pageBusyEnd("#btn-form-submit");
+
+            var errorMessage = ajaxErrorGetText(xhr);
+            jQuery('#s-lc-eq-errors').html(errorMessage).show().focus();
+        }
+
+        function submitPendingTimes() {
+            var payload = {
+                patron: springySpaces.patron,
+                patronHash: springySpaces.patronHash,
+                returnUrl: springySpaces.getReturnUrl(),
+                bookings: preparePendingBookingsPayload(),
+                method: springyPage.bookingMethod,
+            };
+
+            pageBusyBegin("#submit_times");
+
+            jQuery.ajax({
+                type: 'post',
+                url: '/ajax/space/times',
+                data: payload,
+                dataType: 'json',
+            })
+            .always(function () {
+                pageBusyEnd("#submit_times");
+            })
+            .done(function(data) {
+                if (data.redirect) {
+                    // redirect to libauth checkout page
+                    window.location = data.redirect;
+                    return;
+                }
+
+                // hide a bunch of stuff
+                jQuery('.s-lc-spaces-setup-info').hide();
+
+                // setup booking form + terms html
+                jQuery("#s-lc-eq-form").html(data.html).show();
+                springyCommon.setupCustomRequiredValidation();
+
+                // scroll to the top of the page
+                window.scrollTo(0, 0);
+            })
+            .fail(ajaxErrorHandler);
+
+            return false;
+        }
+
+        function makeCartAndGoToEquipPage() {
+            // we only allow user to do this if all the room bookings start at the same time
+            if (pendingRoomBookings.length > 1) {
+                var startTime = pendingRoomBookings[0].start;
+                for (var i = 1; i < pendingRoomBookings.length; i++) {
+                    var bookingInfo = pendingRoomBookings[i];
+                    if (!bookingInfo.start.isSame(startTime)) {
+                        errorAlert('You can only create an Equipment Cart if all your room bookings begin at the same time.');
+                        return false;
+                    }
+                }
+            }
+
+            var payload = {
+                blowAwayCart: pendingBookingsBlowAwayCart,
+                returnUrl: springySpaces.getReturnUrl(),
+                bookings: preparePendingBookingsPayload(),
+                method: springyPage.bookingMethod,
+            };
+
+            workingAlert();
+
+            jQuery.ajax({
+                type: 'post',
+                url: "/ajax/space/createcart",
+                data: payload,
+                dataType: 'json',
+            })
+            .always(function (data) {
+                stopAlert();
+            })
+            .done(function(data) {
+                if (data.success) {
+                    // redirect to new page
+                    window.location = data.redirect;
+                } else if (data.hasItems) {
+                    errorAlert("Cart already has items in it. If you click the shopping cart again, the existing items in the cart will be replaced by the selected rooms.");
+                    pendingBookingsBlowAwayCart = true;
+                } else {
+                    errorAlert(data.error);
+                }
+            })
+            .fail(ajaxErrorHandler);
+
+            return false;
+        }
+
+        function changeBookingTimes() {
+            // show the old form box + availability grid
+            jQuery('.s-lc-spaces-setup-info').show();
+
+            // hide the terms + booking form
+            jQuery('#s-lc-eq-form, #s-lc-eq-errors').hide();
+
+            return false;
+        }
+
+        function getSpaceResourceContent(info) {
+            var html = '';
+            var resourceData = info.resource.extendedProps;
+            var resourceId = springyPage.isSeatBooking ? resourceData.seatId : resourceData.eid;
+            var title  = escapeHtml(info.fieldValue);
+
+            if (resourceData.hasInfo) {
+                html += '<a href="#" class="s-lc-item-more-info" data-eid="' + resourceId + '"' +
+                    ' aria-label="Click\u0020for\u0020more\u0020info\u0020about ' + title + '">' +
+                    '<span class="s-lc-info-label">Info</span>' +
+                    '</a>';
+            }
+
+            var additionalClasses = '';
+            var additionalIcons = '';
+            var filterIds = resourceData.filterIds || [];
+
+            for (var i = 0; i < filterIds.length; i++) {
+                var filterId = filterIds[i];
+                if (filterId in springyPage.searchFilters) {
+                    var filter = springyPage.searchFilters[filterId];
+
+                    additionalClasses += ' s-lc-filter-' + filterId;
+                    additionalIcons += ' <i class="fa ' + filter.icon + ' fa-lg" aria-hidden="true"></i>';
+                }
+            }
+
+            var resourceLabel = '<span class="fc-cell-text' + additionalClasses + '">' + title + additionalIcons + '</span>';
+
+            if (resourceData.url !== undefined) {
+                html += '<a href="' + resourceData.url + '">' + resourceLabel + '</a>';
+            } else {
+                html += resourceLabel;
+            }
+
+            return {
+                html: html,
+            };
+        }
+
+        jQuery(function () {
+            springyPublic.registerClearBackForwardCache();
+
+            jQuery('#lid').on('change', goToPageForLocation);
+            jQuery('#gid').on('change', goToPageForGroup);
+
+            jQuery('#eq_cart').on('click', makeCartAndGoToEquipPage);
+
+            jQuery('#s-lc-eq-form-times').on('submit', submitPendingTimes);
+        });
+    </script>
+
+
+    <script src="https://static-assets-us.libcal.com/js_129/direct/pagination.min.js"></script>
+    <script src="https://static-assets-us.libcal.com/js_129/direct/public/equipment/spaces-standard.min.js"></script>
+        <script>
+        var springyPage = {
+            wantAlternatingBackground: false,
+            timelineOptions: {
+                resourceAreaWidth: '33%',
+                            },
+            locationId: 5154,
+            groupId: 33215,
+            itemId: -1,
+            isSeatBooking: 1,
+            seatId: 0,
+            zoneId: 0,
+            searchFilters: {"5005":{"id":5005,"icon":"fa-wheelchair-alt","name":"Accessible Seat\/Space"},"5006":{"id":5006,"icon":"fa-plug","name":"Power Available"}},
+            filterIds: [],
+            isDailyBookings: 0,
+            resourceRows: 0,
+            resourceColumnLabel: 'Seat',
+            viewMode: 'timelineSingleDay',
+            returnUrl: '',
+            capacitySeatValue: -1,
+            pageIndex: 0,
+            pageSize: 18,
+            bookingMethod: 11,
+            showGridHelp: true,
+            language: {
+                gridHelp: 'First\u0020select\u0020a\u0020start\u0020time\u0020from\u0020the\u0020grid\u0020below.\u0020You\u0020will\u0020then\u0020be\u0020able\u0020to\u0020modify\u0020the\u0020end\u0020date\/time\u0020in\u0020the\u0020dropdown\u0020below\u0020the\u0020grid.'
+            },
+        };
+
+        var resources = [];
+        var resourceNameIdMap = [];
+
+                                                                                                                    
+                                
+    resources.push({
+        id: 'eid_165230',
+        title: 'KC01',
+        url: '/seat/165230',
+        eid: 131384,
+        seatId: 165230,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165230'] = 'KC01';
+                                
+    resources.push({
+        id: 'eid_165231',
+        title: 'KC02',
+        url: '/seat/165231',
+        eid: 131384,
+        seatId: 165231,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165231'] = 'KC02';
+                                
+    resources.push({
+        id: 'eid_165232',
+        title: 'KC03',
+        url: '/seat/165232',
+        eid: 131384,
+        seatId: 165232,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165232'] = 'KC03';
+                                
+    resources.push({
+        id: 'eid_165233',
+        title: 'KC04',
+        url: '/seat/165233',
+        eid: 131384,
+        seatId: 165233,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165233'] = 'KC04';
+                                
+    resources.push({
+        id: 'eid_165234',
+        title: 'KC05',
+        url: '/seat/165234',
+        eid: 131384,
+        seatId: 165234,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165234'] = 'KC05';
+                                
+    resources.push({
+        id: 'eid_165235',
+        title: 'KC06',
+        url: '/seat/165235',
+        eid: 131384,
+        seatId: 165235,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165235'] = 'KC06';
+                                
+    resources.push({
+        id: 'eid_165236',
+        title: 'KC07',
+        url: '/seat/165236',
+        eid: 131384,
+        seatId: 165236,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165236'] = 'KC07';
+                                
+    resources.push({
+        id: 'eid_165237',
+        title: 'KC08',
+        url: '/seat/165237',
+        eid: 131384,
+        seatId: 165237,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165237'] = 'KC08';
+                                
+    resources.push({
+        id: 'eid_165238',
+        title: 'KC09',
+        url: '/seat/165238',
+        eid: 131384,
+        seatId: 165238,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165238'] = 'KC09';
+                                
+    resources.push({
+        id: 'eid_165239',
+        title: 'KC10',
+        url: '/seat/165239',
+        eid: 131384,
+        seatId: 165239,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165239'] = 'KC10';
+                                
+    resources.push({
+        id: 'eid_165240',
+        title: 'KC11',
+        url: '/seat/165240',
+        eid: 131384,
+        seatId: 165240,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165240'] = 'KC11';
+                                
+    resources.push({
+        id: 'eid_165241',
+        title: 'KC12',
+        url: '/seat/165241',
+        eid: 131384,
+        seatId: 165241,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165241'] = 'KC12';
+                                
+    resources.push({
+        id: 'eid_165242',
+        title: 'KC13',
+        url: '/seat/165242',
+        eid: 131384,
+        seatId: 165242,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165242'] = 'KC13';
+                                
+    resources.push({
+        id: 'eid_165243',
+        title: 'KC14',
+        url: '/seat/165243',
+        eid: 131384,
+        seatId: 165243,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165243'] = 'KC14';
+                                
+    resources.push({
+        id: 'eid_165244',
+        title: 'KC15',
+        url: '/seat/165244',
+        eid: 131384,
+        seatId: 165244,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165244'] = 'KC15';
+                                
+    resources.push({
+        id: 'eid_165245',
+        title: 'KC16',
+        url: '/seat/165245',
+        eid: 131384,
+        seatId: 165245,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165245'] = 'KC16';
+                                
+    resources.push({
+        id: 'eid_165246',
+        title: 'KC17',
+        url: '/seat/165246',
+        eid: 131384,
+        seatId: 165246,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165246'] = 'KC17';
+                                
+    resources.push({
+        id: 'eid_165247',
+        title: 'KC18',
+        url: '/seat/165247',
+        eid: 131384,
+        seatId: 165247,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165247'] = 'KC18';
+                                
+    resources.push({
+        id: 'eid_165248',
+        title: 'KC19',
+        url: '/seat/165248',
+        eid: 131384,
+        seatId: 165248,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165248'] = 'KC19';
+                                
+    resources.push({
+        id: 'eid_165249',
+        title: 'KC20',
+        url: '/seat/165249',
+        eid: 131384,
+        seatId: 165249,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165249'] = 'KC20';
+                                
+    resources.push({
+        id: 'eid_165250',
+        title: 'KC21',
+        url: '/seat/165250',
+        eid: 131384,
+        seatId: 165250,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165250'] = 'KC21';
+                                
+    resources.push({
+        id: 'eid_165251',
+        title: 'KC22',
+        url: '/seat/165251',
+        eid: 131384,
+        seatId: 165251,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165251'] = 'KC22';
+                                
+    resources.push({
+        id: 'eid_165252',
+        title: 'KC23',
+        url: '/seat/165252',
+        eid: 131384,
+        seatId: 165252,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165252'] = 'KC23';
+                                
+    resources.push({
+        id: 'eid_165253',
+        title: 'KC24',
+        url: '/seat/165253',
+        eid: 131384,
+        seatId: 165253,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165253'] = 'KC24';
+                                
+    resources.push({
+        id: 'eid_165254',
+        title: 'KC25',
+        url: '/seat/165254',
+        eid: 131384,
+        seatId: 165254,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165254'] = 'KC25';
+                                
+    resources.push({
+        id: 'eid_165255',
+        title: 'KC26',
+        url: '/seat/165255',
+        eid: 131384,
+        seatId: 165255,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165255'] = 'KC26';
+                                
+    resources.push({
+        id: 'eid_165256',
+        title: 'KC27',
+        url: '/seat/165256',
+        eid: 131384,
+        seatId: 165256,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165256'] = 'KC27';
+                                
+    resources.push({
+        id: 'eid_165257',
+        title: 'KC28',
+        url: '/seat/165257',
+        eid: 131384,
+        seatId: 165257,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165257'] = 'KC28';
+                                
+    resources.push({
+        id: 'eid_165259',
+        title: 'KC30',
+        url: '/seat/165259',
+        eid: 131384,
+        seatId: 165259,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165259'] = 'KC30';
+                                
+    resources.push({
+        id: 'eid_165260',
+        title: 'KC31',
+        url: '/seat/165260',
+        eid: 131384,
+        seatId: 165260,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165260'] = 'KC31';
+                                
+    resources.push({
+        id: 'eid_165261',
+        title: 'KC32',
+        url: '/seat/165261',
+        eid: 131384,
+        seatId: 165261,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165261'] = 'KC32';
+                                
+    resources.push({
+        id: 'eid_165262',
+        title: 'KC33',
+        url: '/seat/165262',
+        eid: 131384,
+        seatId: 165262,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165262'] = 'KC33';
+                                
+    resources.push({
+        id: 'eid_165263',
+        title: 'KC34',
+        url: '/seat/165263',
+        eid: 131384,
+        seatId: 165263,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165263'] = 'KC34';
+                                
+    resources.push({
+        id: 'eid_165264',
+        title: 'KC35',
+        url: '/seat/165264',
+        eid: 131384,
+        seatId: 165264,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165264'] = 'KC35';
+                                
+    resources.push({
+        id: 'eid_165265',
+        title: 'KC36',
+        url: '/seat/165265',
+        eid: 131384,
+        seatId: 165265,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165265'] = 'KC36';
+                                
+    resources.push({
+        id: 'eid_165266',
+        title: 'KC37',
+        url: '/seat/165266',
+        eid: 131384,
+        seatId: 165266,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165266'] = 'KC37';
+                                
+    resources.push({
+        id: 'eid_165267',
+        title: 'KC38',
+        url: '/seat/165267',
+        eid: 131384,
+        seatId: 165267,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165267'] = 'KC38';
+                                
+    resources.push({
+        id: 'eid_165268',
+        title: 'KC39',
+        url: '/seat/165268',
+        eid: 131384,
+        seatId: 165268,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165268'] = 'KC39';
+                                
+    resources.push({
+        id: 'eid_165269',
+        title: 'KC40',
+        url: '/seat/165269',
+        eid: 131384,
+        seatId: 165269,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165269'] = 'KC40';
+                                
+    resources.push({
+        id: 'eid_165270',
+        title: 'KC41',
+        url: '/seat/165270',
+        eid: 131384,
+        seatId: 165270,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165270'] = 'KC41';
+                                
+    resources.push({
+        id: 'eid_165271',
+        title: 'KC42',
+        url: '/seat/165271',
+        eid: 131384,
+        seatId: 165271,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165271'] = 'KC42';
+                                
+    resources.push({
+        id: 'eid_165274',
+        title: 'KC45',
+        url: '/seat/165274',
+        eid: 131384,
+        seatId: 165274,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165274'] = 'KC45';
+                                
+    resources.push({
+        id: 'eid_165275',
+        title: 'KC46',
+        url: '/seat/165275',
+        eid: 131384,
+        seatId: 165275,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165275'] = 'KC46';
+                                
+    resources.push({
+        id: 'eid_165276',
+        title: 'KC47',
+        url: '/seat/165276',
+        eid: 131384,
+        seatId: 165276,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165276'] = 'KC47';
+                                
+    resources.push({
+        id: 'eid_165278',
+        title: 'KC49',
+        url: '/seat/165278',
+        eid: 131384,
+        seatId: 165278,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165278'] = 'KC49';
+                                
+    resources.push({
+        id: 'eid_165279',
+        title: 'KC50',
+        url: '/seat/165279',
+        eid: 131384,
+        seatId: 165279,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_165279'] = 'KC50';
+                                
+    resources.push({
+        id: 'eid_166662',
+        title: 'KC51',
+        url: '/seat/166662',
+        eid: 131384,
+        seatId: 166662,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166662'] = 'KC51';
+                                
+    resources.push({
+        id: 'eid_166663',
+        title: 'KC52',
+        url: '/seat/166663',
+        eid: 131384,
+        seatId: 166663,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166663'] = 'KC52';
+                                
+    resources.push({
+        id: 'eid_166664',
+        title: 'KC53',
+        url: '/seat/166664',
+        eid: 131384,
+        seatId: 166664,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166664'] = 'KC53';
+                                
+    resources.push({
+        id: 'eid_166665',
+        title: 'KC54',
+        url: '/seat/166665',
+        eid: 131384,
+        seatId: 166665,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166665'] = 'KC54';
+                                
+    resources.push({
+        id: 'eid_166666',
+        title: 'KC55',
+        url: '/seat/166666',
+        eid: 131384,
+        seatId: 166666,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166666'] = 'KC55';
+                                
+    resources.push({
+        id: 'eid_166667',
+        title: 'KC56',
+        url: '/seat/166667',
+        eid: 131384,
+        seatId: 166667,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166667'] = 'KC56';
+                                
+    resources.push({
+        id: 'eid_166668',
+        title: 'KC57',
+        url: '/seat/166668',
+        eid: 131384,
+        seatId: 166668,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166668'] = 'KC57';
+                                
+    resources.push({
+        id: 'eid_166669',
+        title: 'KC58',
+        url: '/seat/166669',
+        eid: 131384,
+        seatId: 166669,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166669'] = 'KC58';
+                                
+    resources.push({
+        id: 'eid_166670',
+        title: 'KC59',
+        url: '/seat/166670',
+        eid: 131384,
+        seatId: 166670,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166670'] = 'KC59';
+                                
+    resources.push({
+        id: 'eid_166671',
+        title: 'KC60',
+        url: '/seat/166671',
+        eid: 131384,
+        seatId: 166671,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166671'] = 'KC60';
+                                
+    resources.push({
+        id: 'eid_166672',
+        title: 'KC61',
+        url: '/seat/166672',
+        eid: 131384,
+        seatId: 166672,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166672'] = 'KC61';
+                                
+    resources.push({
+        id: 'eid_166673',
+        title: 'KC62',
+        url: '/seat/166673',
+        eid: 131384,
+        seatId: 166673,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166673'] = 'KC62';
+                                
+    resources.push({
+        id: 'eid_166674',
+        title: 'KC63',
+        url: '/seat/166674',
+        eid: 131384,
+        seatId: 166674,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166674'] = 'KC63';
+                                
+    resources.push({
+        id: 'eid_166675',
+        title: 'KC64',
+        url: '/seat/166675',
+        eid: 131384,
+        seatId: 166675,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166675'] = 'KC64';
+                                
+    resources.push({
+        id: 'eid_166677',
+        title: 'KC66',
+        url: '/seat/166677',
+        eid: 131384,
+        seatId: 166677,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166677'] = 'KC66';
+                                
+    resources.push({
+        id: 'eid_166678',
+        title: 'KC67',
+        url: '/seat/166678',
+        eid: 131384,
+        seatId: 166678,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166678'] = 'KC67';
+                                
+    resources.push({
+        id: 'eid_166679',
+        title: 'KC68',
+        url: '/seat/166679',
+        eid: 131384,
+        seatId: 166679,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166679'] = 'KC68';
+                                
+    resources.push({
+        id: 'eid_166680',
+        title: 'KC69',
+        url: '/seat/166680',
+        eid: 131384,
+        seatId: 166680,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166680'] = 'KC69';
+                                
+    resources.push({
+        id: 'eid_166681',
+        title: 'KC70',
+        url: '/seat/166681',
+        eid: 131384,
+        seatId: 166681,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166681'] = 'KC70';
+                                
+    resources.push({
+        id: 'eid_166682',
+        title: 'KC71',
+        url: '/seat/166682',
+        eid: 131384,
+        seatId: 166682,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166682'] = 'KC71';
+                                
+    resources.push({
+        id: 'eid_166683',
+        title: 'KC72',
+        url: '/seat/166683',
+        eid: 131384,
+        seatId: 166683,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166683'] = 'KC72';
+                                
+    resources.push({
+        id: 'eid_166684',
+        title: 'KC73',
+        url: '/seat/166684',
+        eid: 131384,
+        seatId: 166684,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166684'] = 'KC73';
+                                
+    resources.push({
+        id: 'eid_166685',
+        title: 'KC74',
+        url: '/seat/166685',
+        eid: 131384,
+        seatId: 166685,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166685'] = 'KC74';
+                                
+    resources.push({
+        id: 'eid_166686',
+        title: 'KC75',
+        url: '/seat/166686',
+        eid: 131384,
+        seatId: 166686,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166686'] = 'KC75';
+                                
+    resources.push({
+        id: 'eid_166687',
+        title: 'KC76',
+        url: '/seat/166687',
+        eid: 131384,
+        seatId: 166687,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166687'] = 'KC76';
+                                
+    resources.push({
+        id: 'eid_166688',
+        title: 'KC77',
+        url: '/seat/166688',
+        eid: 131384,
+        seatId: 166688,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166688'] = 'KC77';
+                                
+    resources.push({
+        id: 'eid_166689',
+        title: 'KC78',
+        url: '/seat/166689',
+        eid: 131384,
+        seatId: 166689,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166689'] = 'KC78';
+                                
+    resources.push({
+        id: 'eid_166690',
+        title: 'KC79',
+        url: '/seat/166690',
+        eid: 131384,
+        seatId: 166690,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166690'] = 'KC79';
+                                
+    resources.push({
+        id: 'eid_166691',
+        title: 'KC80',
+        url: '/seat/166691',
+        eid: 131384,
+        seatId: 166691,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166691'] = 'KC80';
+                                
+    resources.push({
+        id: 'eid_166692',
+        title: 'KC81',
+        url: '/seat/166692',
+        eid: 131384,
+        seatId: 166692,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166692'] = 'KC81';
+                                
+    resources.push({
+        id: 'eid_166693',
+        title: 'KC82',
+        url: '/seat/166693',
+        eid: 131384,
+        seatId: 166693,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166693'] = 'KC82';
+                                
+    resources.push({
+        id: 'eid_166694',
+        title: 'KC83',
+        url: '/seat/166694',
+        eid: 131384,
+        seatId: 166694,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166694'] = 'KC83';
+                                
+    resources.push({
+        id: 'eid_166695',
+        title: 'KC84',
+        url: '/seat/166695',
+        eid: 131384,
+        seatId: 166695,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166695'] = 'KC84';
+                                
+    resources.push({
+        id: 'eid_166696',
+        title: 'KC85',
+        url: '/seat/166696',
+        eid: 131384,
+        seatId: 166696,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166696'] = 'KC85';
+                                
+    resources.push({
+        id: 'eid_166697',
+        title: 'KC86',
+        url: '/seat/166697',
+        eid: 131384,
+        seatId: 166697,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166697'] = 'KC86';
+                                
+    resources.push({
+        id: 'eid_166698',
+        title: 'KC87',
+        url: '/seat/166698',
+        eid: 131384,
+        seatId: 166698,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166698'] = 'KC87';
+                                
+    resources.push({
+        id: 'eid_166699',
+        title: 'KC88',
+        url: '/seat/166699',
+        eid: 131384,
+        seatId: 166699,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166699'] = 'KC88';
+                                
+    resources.push({
+        id: 'eid_166700',
+        title: 'KC89',
+        url: '/seat/166700',
+        eid: 131384,
+        seatId: 166700,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166700'] = 'KC89';
+                                
+    resources.push({
+        id: 'eid_166701',
+        title: 'KC90',
+        url: '/seat/166701',
+        eid: 131384,
+        seatId: 166701,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166701'] = 'KC90';
+                                
+    resources.push({
+        id: 'eid_166702',
+        title: 'KC91',
+        url: '/seat/166702',
+        eid: 131384,
+        seatId: 166702,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166702'] = 'KC91';
+                                
+    resources.push({
+        id: 'eid_166703',
+        title: 'KC92',
+        url: '/seat/166703',
+        eid: 131384,
+        seatId: 166703,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166703'] = 'KC92';
+                                
+    resources.push({
+        id: 'eid_166704',
+        title: 'KC93',
+        url: '/seat/166704',
+        eid: 131384,
+        seatId: 166704,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166704'] = 'KC93';
+                                
+    resources.push({
+        id: 'eid_166705',
+        title: 'KC94',
+        url: '/seat/166705',
+        eid: 131384,
+        seatId: 166705,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166705'] = 'KC94';
+                                
+    resources.push({
+        id: 'eid_166706',
+        title: 'KC95',
+        url: '/seat/166706',
+        eid: 131384,
+        seatId: 166706,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166706'] = 'KC95';
+                                
+    resources.push({
+        id: 'eid_166707',
+        title: 'KC96',
+        url: '/seat/166707',
+        eid: 131384,
+        seatId: 166707,
+        gid: 33215,
+        lid: 5154,
+        grouping: 'Knowledge\u0020Commons\u0020Computers\u0020',
+        hasInfo: 1,
+        thumbnail: '',
+        capacity: 0,
+        filterIds: [5006],
+    });
+
+    resourceNameIdMap['eid_166707'] = 'KC96';
+        
+        var paginatedResources = springyPagination.createPaginatedResources(resources, springyPage.pageSize);
+
+        var capacityRangesMap = {};
+                                capacityRangesMap[0] = {
+                min: 0,
+                max: 9223372036854775807
+            };
+                                capacityRangesMap[1] = {
+                min: 0,
+                max: 6
+            };
+                                capacityRangesMap[2] = {
+                min: 7,
+                max: 7
+            };
+                                capacityRangesMap[3] = {
+                min: 8,
+                max: 10
+            };
+                                capacityRangesMap[4] = {
+                min: 11,
+                max: 9223372036854775807
+            };
+        
+        var resourceSettings = createResourceSettings(1);
+
+        springyPage.resourceCount = resources.length;
+    </script>
+    
+    <script>
+    var pendingBookingsLimitIssues = null;
+    var dateFormatStartTimeDict = "MMDDHHmm";
+    var dateFormatDayOfYear = "YYYY-MM-DD";
+    var issueTypeAdditionalText = {
+        "duration": " minutes",
+        "frequency": " bookings",
+    };
+    var frequencyDisplayStrings = {
+        "d": " per\u0020day",
+        "w": " per\u0020week",
+        "m": " per\u0020month",
+        "y": " per\u0020year",
+        "t": " at\u0020a\u0020time",
+    };
+
+    function pendingRoomBookingsAreNowEmpty() {
+        jQuery("#s-lc-eq-form-box").hide();
+    }
+
+    function renderPendingRoomBookings() {
+        // ensure all tooltips are hidden
+        jQuery(".tooltip").hide();
+
+        if (pendingRoomBookings.length == 0) {
+            pendingRoomBookingsAreNowEmpty();
+            return;
+        }
+
+        // refresh the shown cart items
+        // format the room data as html
+        var html = '<div>';
+
+        var startDateTimeFormat = springyPage.isDailyBookings ? springSpace.dateFormat : springSpace.getDateTimeFormat();
+        var endDateTimeFormat = springyPage.isDailyBookings ? springSpace.dateFormat : springSpace.getShortDateTimeFormat();
+        var totalCost = 0;
+
+        for (var i = 0; i < pendingRoomBookings.length; i++) {
+            var bookingInfo = pendingRoomBookings[i];
+            var bookingCost = bookingInfo.cost;
+            var resourceId = bookingInfo.seat_id > 0 ? bookingInfo.seat_id : bookingInfo.eid;
+            var resourceName = resourceNameIdMap['eid_' + resourceId];
+
+            html += '<div class="form-group s-lc-pending-booking" id="pending_booking_' + bookingInfo.id + '">';
+            html += '   <label class="col-md-5 control-label" for="bookingend_' + bookingInfo.id + '"><strong>' + resourceName + '</strong>: ' + bookingInfo.start.format(startDateTimeFormat) + ' ' + springLang.eq_js_until_det + '</label>';
+            html += '   <div class="col-md-3">';
+            html += '     <div class="input-group">';
+            html += '           <select id="bookingend_' + bookingInfo.id + '" name="bookingend_' + bookingInfo.id + '" data-booking="' + bookingInfo.id + '" class="form-control input-sm b-end-date">';
+
+            for (var selectionIndex = 0; selectionIndex < bookingInfo.options.length; selectionIndex++) {
+                var selected = bookingInfo.optionSelected == selectionIndex ? 'selected="selected"' : '';
+                var value = bookingInfo.options[selectionIndex];
+                var name = moment(value).format(endDateTimeFormat);
+                var checksum = bookingInfo.optionChecksums[selectionIndex];
+                html += '<option value="' + value + '" ' + selected + ' data-crc="' + checksum + '">' + name + '</option>';
+            }
+
+            html += '           </select>';
+            html += '           <div class="input-group-btn">';
+            html += '               <button type="button" class="btn btn-default btn-sm" onclick="return removePendingBooking(' + bookingInfo.id + ',' + bookingInfo.lid + ');"><i class="fa fa-trash-o" aria-hidden="true"></i><span class="sr-only">' + springLang.eq_js_rem_pending + '</span></button>';
+            html += '           </div>';
+            html += '       </div>';
+            html += '     </div>';
+            if (bookingCost > 0) {
+                var costDisplay = springSpace.formatCurrency(bookingCost);
+                var costPreview = "\u007Bamount\u007D".replace("\u007Bamount\u007D", costDisplay).replace("\u007Brate\u007D", "");
+                html += '<label class="col-md-3 control-label s-lc-billing-cost-single">' + costPreview + '</label>';
+            }
+            html += '   </div>';
+            html += '   </div>';
+            html += '</div>';
+
+            totalCost += bookingCost;
+        }
+
+        var bookingDurationOkay = true;
+        if (pendingBookingsLimitIssues) {
+            bookingDurationOkay = false;
+            pendingBookingsLimitIssues.forEach(function(issueDetails) {
+                var limitDisplay = issueDetails.allowed + issueTypeAdditionalText[issueDetails.type] + frequencyDisplayStrings[issueDetails.frequency];
+                var usedDisplay = issueDetails.used + issueTypeAdditionalText[issueDetails.type];
+                var issueDisplay = 'Sorry,\u0020you\u0020can\u0020only\u0020reserve\u0020\u007BlimitAmount\u007D,\u0020and\u0020you\u0020currently\u0020have\u0020\u007BusedAmount\u007D.\u0020Please\u0020adjust\u0020your\u0020booking.'.replace('{limitAmount}', limitDisplay).replace('{usedAmount}', usedDisplay);
+                var issueHtml = '<strong>' + issueDetails.group + '</strong>: ' + issueDisplay;
+
+                html += '\
+                    <div class="form-group">\
+                        <div class="col-md-offset-1 col-md-10">\
+                            <div class="alert alert-warning">' + issueHtml + '</div>\
+                        </div>\
+                    </div>';
+            });
+        }
+
+        if (totalCost > 0) {
+            html += '\
+                <div class="form-group s-lc-pending-booking">\
+                    <label class="col-md-5 control-label">Total\u0020cost\u0020for\u0020this\u0020reservation\u003A</label>\
+                    <label class="col-md-5 control-label s-lc-billing-cost-total">' + springSpace.formatCurrency(totalCost) + '</label>\
+                </div>';
+        }
+
+        html += '</div>';
+
+        // show the booking form box which contains the booking well, the terms + conditions and the booking form
+        jQuery("#s-lc-eq-form-box").show();
+
+        // put the item in the displayed cart + set the window focus to the cart
+        var roomCart = jQuery("#s-lc-eq-bwell");
+        roomCart.empty();
+        roomCart.html(html);
+        roomCart.focus();
+
+        // disable the add equipment and form submission buttons until the times are okay
+        jQuery("#submit_times, #eq_cart").prop('disabled', !bookingDurationOkay);
+
+        // setup delete icon tooltips
+        accessibleIcons();
+
+        // make the tooltip for the cart icon
+        jQuery("#eq_cart").tooltip({
+            title: springLang.eq_js_cart_tt,
+            html: true,
+            container: "body"
+        });
+
+        jQuery('.b-end-date').on('change', function() {
+            var changedBooking = jQuery(this);
+
+            updatePendingBookingDuration(changedBooking);
+        });
+    }
+
+    function preparePendingBookingsPayload() {
+        var payload = [];
+
+        for (var i = 0; i < pendingRoomBookings.length; i++) {
+            var bookingInfo = pendingRoomBookings[i];
+            payload.push({
+                id: bookingInfo.id,
+                eid: bookingInfo.eid,
+                seat_id: bookingInfo.seat_id,
+                gid: bookingInfo.gid,
+                lid: bookingInfo.lid,
+                start: bookingInfo.start.format(springSpace.phpDateTimeFormat),
+                end: bookingInfo.end.format(springSpace.phpDateTimeFormat),
+                checksum: bookingInfo.checksum,
+            });
+        }
+        return payload;
+    }
+
+    function updatePendingBookingsFromData(bookings) {
+        pendingRoomBookings = [];
+
+        for (var i = 0; i < bookings.length; i++) {
+            var booking = bookings[i];
+
+            pendingRoomBookings.push({
+                id: booking.id,
+                eid: booking.eid,
+                seat_id: booking.seat_id,
+                gid: booking.gid,
+                lid: booking.lid,
+                cost: booking.cost,
+                checksum: booking.checksum,
+
+                name: booking.name,
+                start: moment(booking.start),
+                end: moment(booking.end),
+
+                options: booking.options,
+                optionSelected: booking.optionSelected,
+                optionChecksums: booking.optionChecksums,
+            });
+        }
+    }
+
+    function pendingRoomBookingsUpdateListAndAvailability(payload, fcInstance) {
+        // if we are adding rooms, we might need to hide the previous booking success message
+        jQuery("#s-lc-eq-success").hide();
+
+        workingAlert();
+
+        // find out booking information
+        jQuery.ajax({
+            type: "post",
+            url: "/spaces/availability/booking/add",
+            data: payload,
+            dataType: "json",
+        })
+        .always(stopAlert)
+        .done(function(data) {
+            if (data.error) {
+                if (data.isRefreshRequired) {
+                    fcInstance.refetchEvents();
+                }
+
+                return errorAlert(data.error);
+            }
+
+            // success! the entire pending bookings array can be re-created now
+            pendingBookingsLimitIssues = data.limitIssues;
+            updatePendingBookingsFromData(data.bookings);
+
+            // this request might have came back with updated grid data
+            // if it did not - refresh the whole grid
+            if (data.gridUpdateData) {
+                updateGridEventsForItem(data.gridUpdateData, fcInstance);
+            } else if (fcInstance) {
+                fcInstance.refetchEvents();
+            }
+
+            renderPendingRoomBookings();
+        })
+        .fail(ajaxErrorHandler);
+
+        return false;
+    }
+
+    function createStartTimeToClassMap(gridData) {
+        var startTimeToClassMap = {};
+
+        gridData.forEach(function(gridElement) {
+            var startMoment = moment(gridElement.start);
+            startTimeToClassMap[startMoment.format(dateFormatStartTimeDict)] = [gridElement.className];
+        });
+
+        return startTimeToClassMap;
+    }
+
+    function updateGridEventsForItem(gridUpdateData, fcInstance) {
+        var changedItemId = gridUpdateData.itemId;
+        var changedRangeStart = moment(gridUpdateData.dateStart, springSpace.phpDateTimeFormat);
+        var changedRangeEnd = moment(gridUpdateData.dateEnd, springSpace.phpDateTimeFormat);
+        var startTimeToClassMap = createStartTimeToClassMap(gridUpdateData.gridData);
+
+        fcInstance.batchRendering(function() {
+            fcInstance.getEvents().forEach(function (clientEvent) {
+                if (clientEvent.extendedProps.itemId !== changedItemId) {
+                    return;
+                }
+
+                var clientEventStart = moment(clientEvent.start);
+                // if this event is before the day of events that was changed - forget it
+                // and we only want to process events that start before the changed range "end"
+                if (clientEventStart.isBefore(changedRangeStart) || !clientEventStart.isBefore(changedRangeEnd)) {
+                    return;
+                }
+
+                var startKey = clientEventStart.format(dateFormatStartTimeDict);
+                if (startKey in startTimeToClassMap) {
+                    // this slot is unavailable
+                    clientEvent.setProp('classNames', startTimeToClassMap[startKey]);
+                    clientEvent.setExtendedProp('status', 1);
+                } else {
+                    // this slot is available
+                    clientEvent.setProp('classNames', ["s-lc-eq-avail"]);
+                    clientEvent.setExtendedProp('status', 0);
+                }
+            });
+        });
+    }
+
+    function timeGridClickedOnAvailableRoom(calEvent, fcInstance) {
+        var resource = calEvent.getResources()[0];
+        var resourceData = resource.extendedProps;
+        var timeslotData = calEvent.extendedProps;
+        var view = fcInstance.view;
+
+        var payload = {
+            add: {
+                eid: resourceData.eid,
+                seat_id: resourceData.seatId,
+                gid: resourceData.gid,
+                lid: resourceData.lid,
+                start: moment(calEvent.start).format(springSpace.phpDateTimeFormat),
+                checksum: timeslotData.checksum,
+            },
+                        lid: 5154,
+            gid: 33215,
+                        start: moment(view.activeStart).format(dateFormatDayOfYear),
+            end: moment(view.activeEnd).format(dateFormatDayOfYear),
+            bookings: preparePendingBookingsPayload(),
+        }
+
+        return pendingRoomBookingsUpdateListAndAvailability(payload, fcInstance);
+    }
+
+    function updatePendingBookingDuration(changedBooking) {
+        var fcInstance = getCurrentTimelineInstance(5154);
+        var view = fcInstance.view;
+        var selectedElement = changedBooking.find(':selected');
+
+        var payload = {
+            update: {
+                id: changedBooking.data('booking'),
+                checksum: selectedElement.data('crc'),
+                end: changedBooking.val()
+            },
+                        lid: 5154,
+            gid: 33215,
+                        start: moment(view.activeStart).format(dateFormatDayOfYear),
+            end: moment(view.activeEnd).format(dateFormatDayOfYear),
+            bookings: preparePendingBookingsPayload(),
+        }
+
+        return pendingRoomBookingsUpdateListAndAvailability(payload, fcInstance);
+    }
+
+    function removePendingBooking(pendingId, locationId) {
+        var timeline = getCurrentTimelineInstance(locationId);
+        var view = timeline.view;
+
+        var payload = {
+            removeId: pendingId,
+                        lid: 5154,
+            gid: 33215,
+                        start: moment(view.activeStart).format(dateFormatDayOfYear),
+            end: moment(view.activeEnd).format(dateFormatDayOfYear),
+            bookings: preparePendingBookingsPayload(),
+        }
+
+        return pendingRoomBookingsUpdateListAndAvailability(payload, timeline);
+    }
+
+    function formatEventsForFullCalendar(events) {
+        events.forEach(function(eventData) {
+            eventData.resourceId = "eid_" + eventData.itemId;
+
+            if (eventData.className) {
+                // this slot is unavailable
+                eventData.status = 1;
+                eventData.classNames = [eventData.className];
+            } else {
+                // this slot is available
+                eventData.classNames = ["s-lc-eq-avail"];
+                eventData.status = 0;
+            }
+        });
+
+        return events;
+    }
+
+    function timeGridRoomFetchEventsForTimePeriod(start, end, callback, lid, gid, eid) {
+        var data = {
+            lid: lid,
+            gid: gid,
+            eid: eid,
+            seat: springyPage.isSeatBooking,
+            seatId: springyPage.seatId,
+            zone: springyPage.zoneId,
+            filters: springyPage.filterIds,
+            start: moment(start).format(dateFormatDayOfYear),
+            end: moment(end).format(dateFormatDayOfYear),
+            bookings: preparePendingBookingsPayload(),
+            pageIndex: springyPage.pageIndex,
+            pageSize: springyPage.pageSize,
+        };
+
+        var url = '/spaces/availability/grid';
+
+                        if (typeof springyPage.autoCreateBookingDate === 'string') {
+            url = '/spaces/availability/grid/pre-create'
+            data.autoCreateBookingDate = springyPage.autoCreateBookingDate;
+            springyPage.autoCreateBookingDate = null;
+        }
+
+        springyCommon.closeAllPopups();
+
+        jQuery.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            dataType: 'json',
+        })
+        .done(function(data) {
+            callback(formatEventsForFullCalendar(data.slots));
+
+            // sometimes on an initial view of the availability grid we auto-create a booking
+            // (currently this is only possible via maps)
+            if (data.isPreCreatedBooking) {
+                updatePendingBookingsFromData(data.bookings);
+                renderPendingRoomBookings();
+            }
+
+            var isAtEndOfWindowLimit = data.windowEnd === true;
+            jQuery('#s-lc-window-limit-warning').toggle(isAtEndOfWindowLimit);
+            jQuery('.fc-next-button').prop('disabled', isAtEndOfWindowLimit);
+
+                        var selectorPrefix = '';
+            var isNextAvailableButtonWanted = (document.querySelector(selectorPrefix + '.s-lc-eq-avail') === null);
+            jQuery(selectorPrefix + '.fc-goToNextAvailable-button').toggle(isNextAvailableButtonWanted);
+        })
+        .fail(function(xhr) {
+            // let fullcalendar know that the request has completed with no results
+            callback([]);
+
+            // and display the error to the user
+            ajaxErrorHandler(xhr);
+        });
+    }
+</script>
+
+
+
+<div id="s-lc-privacy-statement" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                <h2 class="modal-title">
+                    Privacy Statement
+                </h2>
+            </div>
+
+            <div class="modal-body">
+                <p>To use this platform, the system writes one or more cookies in your browser. These cookies are not shared with any third parties. In addition, your IP address and browser information is stored in server logs and used to generate anonymised usage statistics. Your institution uses these statistics to gauge the use of library content, and the information is not shared with any third parties. Please read the <a href="https://uct.ac.za/media/7885" target="_blank">Privacy Notice for UCT websites</a>.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    springSpace.cookieConsent.alert({
+        okay: "OK",
+        placement: "bottom",
+        consent_message: "This site uses cookies and stores your IP address for usage statistics. <a href='#' id='s-ui-cc-read-more-link'>Read\u0020More</a>",
+        read_more_callback: function () {
+            jQuery("#s-lc-privacy-statement").springshareModal("show");
+        }
+    });
+</script>
+
+
+</body>
+</html>
