@@ -85,9 +85,33 @@ def overlaps(block: Block, held: list[HeldBooking]) -> bool:
     return any(block.start < h.end and h.start < block.end for h in held)
 
 
-def minutes_used(day: date, held: list[HeldBooking]) -> int:
+def too_close(block: Block, held: list[HeldBooking], target: str, gap_minutes: int) -> bool:
+    """Same-category bookings have to be a set distance apart, and the server
+    rejects the whole booking rather than trimming it."""
+    gap = timedelta(minutes=max(gap_minutes, 0))
+    for h in held:
+        if h.target != target:
+            continue
+        # Overlapping its own category is always refused, whatever the fallback
+        # is willing to accept across categories.
+        if block.start < h.end and h.start < block.end:
+            return True
+        if gap_minutes <= 0:
+            continue
+        if block.start >= h.end and block.start - h.end < gap:
+            return True
+        if h.start >= block.end and h.start - block.end < gap:
+            return True
+    return False
+
+
+def minutes_used(day: date, held: list[HeldBooking], target: str | None = None) -> int:
+    """The cap is per category, so a day full of seat bookings still leaves a
+    room category its own four hours."""
     return sum(
-        int((h.end - h.start).total_seconds() // 60) for h in held if h.day == day
+        int((h.end - h.start).total_seconds() // 60)
+        for h in held
+        if h.day == day and (target is None or h.target == target)
     )
 
 
@@ -97,6 +121,7 @@ def choose(
     day: date,
     held: list[HeldBooking],
     labels: dict[int, str] | None = None,
+    allow_overlap: bool = False,
 ) -> Block | None:
     """Best block for one target on one day, or None when nothing fits.
 
@@ -120,7 +145,7 @@ def choose(
     if window_start >= window_end:
         return None
 
-    remaining = spec.rules.max_minutes_per_day - minutes_used(day, held)
+    remaining = spec.rules.max_minutes_per_day - minutes_used(day, held, spec.name)
     if remaining < spec.want.min_minutes:
         return None
 
@@ -132,7 +157,9 @@ def choose(
         blocks = [
             b
             for b in candidates(all_runs, spec, window_start, window_end, wanted)
-            if not excluded(b, spec, labels) and not overlaps(b, held)
+            if not excluded(b, spec, labels)
+            and not too_close(b, held, spec.name, spec.rules.min_gap_minutes)
+            and (allow_overlap or not overlaps(b, held))
         ]
         if blocks:
             return min(blocks, key=lambda b: _rank(b, spec, labels))

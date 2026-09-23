@@ -107,15 +107,61 @@ def goto_with_retry(page: Page, url: str, attempts: int = 3) -> None:
             page.wait_for_timeout(wait * 1000)
 
 
-def is_authenticated(page: Page) -> bool:
-    """LibCal shows a logout control once a patron session exists."""
-    try:
-        return bool(
-            page.locator("a[href*='logout'], a[href*='/logout']").count()
-            or page.locator("#s-lc-public-user, .s-lc-logged-in-user").count()
-        )
-    except Exception:
-        return False
+# Analytics sets plain cookies on the LibCal domain for anonymous visitors, so
+# presence alone proves nothing. A patron session is httpOnly; analytics is not.
+ANALYTICS_PREFIXES = ("_ga", "_gid", "_gat", "_fbp", "_hj")
+
+
+def session_cookies(ctx: BrowserContext) -> list[str]:
+    """Cookies that indicate a signed-in patron rather than a page view."""
+    found = []
+    for cookie in ctx.cookies():
+        name = str(cookie.get("name", ""))
+        domain = str(cookie.get("domain", ""))
+        if "libcal.com" not in domain:
+            continue
+        if name.startswith(ANALYTICS_PREFIXES):
+            continue
+        if not cookie.get("httpOnly"):
+            continue
+        found.append(name)
+    return found
+
+
+def is_authenticated(ctx: BrowserContext) -> bool:
+    return bool(session_cookies(ctx))
+
+
+def wait_for_login(
+    ctx: BrowserContext,
+    page: Page,
+    timeout_ms: int = LOGIN_TIMEOUT_MS,
+    step_ms: int = 2_000,
+) -> bool:
+    """Poll until a LibCal session cookie appears.
+
+    Polling rather than waiting on a keypress, so the login works the same when
+    something other than a person is driving the terminal. The session is saved
+    on every poll, so a browser closed early still leaves a usable jar.
+    """
+    waited = 0
+    while waited < timeout_ms:
+        try:
+            page.wait_for_timeout(step_ms)
+        except Exception:
+            return is_authenticated(ctx)
+        waited += step_ms
+        try:
+            cookies = session_cookies(ctx)
+        except Exception:
+            return False
+        if cookies:
+            save_session(ctx)
+            logger.info("LibCal session cookie(s): %s", ", ".join(sorted(set(cookies))))
+            return True
+        if waited % 30_000 == 0:
+            logger.info("still waiting for sign-in (%ds)", waited // 1000)
+    return False
 
 
 def launch(p: Playwright, headless: bool = True) -> Browser:

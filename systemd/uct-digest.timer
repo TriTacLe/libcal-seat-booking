@@ -1,0 +1,10 @@
+[Unit]
+Description=One overview of the day, every morning
+
+[Timer]
+OnCalendar=*-*-* 04:30:00 UTC
+OnBootSec=5min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

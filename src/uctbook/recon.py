@@ -80,6 +80,17 @@ class Capture:
                 call["response"] = _redact(body, self.secrets)
                 return
 
+    def saw_booking_submit(self) -> bool:
+        """A POST that carries the booking list and came back answered is the
+        submit call, whatever LibCal ends up calling the endpoint."""
+        for call in self.calls:
+            if call["method"] != "POST" or call["status"] is None:
+                continue
+            body = str(call["body"])
+            if "bookings" in body and "checksum" in body:
+                return True
+        return False
+
     def write(self, label: str) -> Path:
         stamped = stamp()
         out = RECON_DIR / f"{stamped}-{label}"

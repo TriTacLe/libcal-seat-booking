@@ -1,0 +1,12 @@
+[Unit]
+Description=UCT library booking, backfill sweep
+After=network-online.target
+Wants=network-online.target
+OnFailure=uct-notify-failure.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/tri/Desktop/personal/uct-room-booking
+Environment=TZ=Africa/Johannesburg
+ExecStart=/home/tri/Desktop/personal/uct-room-booking/.venv/bin/uct book --from today --commit --pause 2
+TimeoutStartSec=3600

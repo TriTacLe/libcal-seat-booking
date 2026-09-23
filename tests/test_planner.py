@@ -160,3 +160,41 @@ def test_minutes_used_ignores_other_days():
 
 def test_window_edge():
     assert window_edge(date(2026, 9, 21), 14) == date(2026, 10, 5)
+
+
+def test_another_category_keeps_its_own_quota():
+    """The cap is per category, so a full day of seats still leaves rooms free."""
+    seats = held("09:00", 240)
+    seats.target = "kc-computers"
+    target = spec(minutes=120, min_minutes=60)
+    target.name = "kc-group-rooms"
+    block = choose(slots(1, "13:00", 48), target, DAY, [seats])
+    assert block is not None
+
+
+def test_overlap_is_refused_then_allowed():
+    """A different category may overlap once the free time has run out."""
+    existing = held("09:00", 120)
+    existing.target = "another-category"
+    only = slots(1, "09:00", 24)
+    assert choose(only, spec(minutes=120, min_minutes=120), DAY, [existing]) is None
+    anyway = choose(only, spec(minutes=120, min_minutes=120), DAY, [existing], allow_overlap=True)
+    assert anyway is not None
+
+
+def test_a_category_that_wants_a_gap_gets_one():
+    """Some categories refuse a booking within three hours of the last one."""
+    existing = held("08:00", 180)
+    existing.target = "t"
+    target = spec(minutes=60, min_minutes=60)
+    target.rules.min_gap_minutes = 180
+    assert choose(slots(1, "11:00", 12), target, DAY, [existing]) is None
+    assert choose(slots(1, "14:00", 12), target, DAY, [existing]) is not None
+
+
+def test_never_overlaps_inside_one_category():
+    """Across categories overlap is fine; inside one the server always says no."""
+    existing = held("09:00", 120)
+    existing.target = "t"
+    target = spec(minutes=120, min_minutes=120)
+    assert choose(slots(1, "09:00", 24), target, DAY, [existing], allow_overlap=True) is None

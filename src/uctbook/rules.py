@@ -26,6 +26,13 @@ class Rules(BaseModel):
     max_minutes_per_day: int = 240
     earliest: str = "08:00"
     latest: str = "19:30"
+    # Some categories refuse a second booking that starts too soon after the
+    # last one: "this category has a limit of 3 hours between bookings".
+    min_gap_minutes: int = 0
+    # Some categories cap the count rather than the minutes.
+    max_bookings_per_day: int | None = None
+    # And some cap a single booking shorter than the daily total.
+    max_minutes_per_booking: int | None = None
 
     @field_validator("earliest", "latest")
     @classmethod

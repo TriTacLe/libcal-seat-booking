@@ -1,0 +1,7 @@
+[Unit]
+Description=Mail when a uct run fails
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/tri/Desktop/personal/uct-room-booking
+ExecStart=/home/tri/Desktop/personal/uct-room-booking/.venv/bin/python -c "from pathlib import Path; from uctbook.config import load_config; from uctbook import notifier; notifier.alert(load_config(Path('config.yaml')), 'run failed', 'A scheduled run exited non-zero. Check journalctl --user -u uct-edge.service')"

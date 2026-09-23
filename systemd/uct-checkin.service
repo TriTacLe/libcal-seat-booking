@@ -1,0 +1,10 @@
+[Unit]
+Description=UCT library check-in
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/tri/Desktop/personal/uct-room-booking
+Environment=TZ=Africa/Johannesburg
+ExecStart=/home/tri/Desktop/personal/uct-room-booking/.venv/bin/uct checkin --commit

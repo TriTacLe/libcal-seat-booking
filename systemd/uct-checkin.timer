@@ -1,0 +1,12 @@
+[Unit]
+Description=Check in to bookings that have just started
+
+[Timer]
+# Every five minutes through the library day: the check-in window is 15.
+OnCalendar=*-*-* 06..17:00/5:00 UTC
+# Deliberately not persistent: catching up a check-in hours later would claim a
+# seat nobody is sitting in.
+Persistent=false
+
+[Install]
+WantedBy=timers.target

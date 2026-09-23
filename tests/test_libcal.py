@@ -1,5 +1,5 @@
 import json
-from datetime import date
+from datetime import date, datetime
 from zoneinfo import ZoneInfo
 
 import pytest
@@ -78,3 +78,27 @@ def test_room_categories_ask_for_the_room_not_a_seat():
     assert "seat=0" in body
     seats = GridQuery(lid=5154, gid=33215)
     assert "seat=1" in _encode(seats.body(date(2026, 9, 28), date(2026, 9, 29)))
+
+
+def test_booking_payload_shape():
+    """One JSON entry per five-minute slot, times echoed back as LibCal sent them."""
+    from uctbook.libcal import bookings_json
+    from uctbook.models import Block, Slot
+
+    def slot(start, end, checksum):
+        return Slot(
+            seat_id=165248, eid=131384,
+            start=datetime(2026, 9, 22, tzinfo=SAST), end=datetime(2026, 9, 22, tzinfo=SAST),
+            checksum=checksum, free=True, raw_start=start, raw_end=end,
+        )
+
+    block = Block(key=165248, slots=(
+        slot("2026-09-22 09:00:00", "2026-09-22 09:05:00", "aaa"),
+        slot("2026-09-22 09:05:00", "2026-09-22 09:10:00", "bbb"),
+    ))
+    assert json.loads(bookings_json(block, 5154)) == [
+        {"lid": 5154, "eid": 131384, "seat_id": 165248,
+         "start": "2026-09-22 09:00:00", "end": "2026-09-22 09:05:00", "checksum": "aaa"},
+        {"lid": 5154, "eid": 131384, "seat_id": 165248,
+         "start": "2026-09-22 09:05:00", "end": "2026-09-22 09:10:00", "checksum": "bbb"},
+    ]

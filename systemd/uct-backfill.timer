@@ -1,0 +1,14 @@
+[Unit]
+Description=Sweep the whole window, and catch up whatever a sleeping laptop missed
+
+[Timer]
+OnCalendar=*-*-* 05:20:00 UTC
+OnCalendar=*-*-* 11:20:00 UTC
+# A laptop that was off at 00:02 missed the edge grab. This runs shortly after
+# boot and sweeps every day in the window, so the missed one is picked up.
+OnBootSec=3min
+RandomizedDelaySec=300
+Persistent=true
+
+[Install]
+WantedBy=timers.target

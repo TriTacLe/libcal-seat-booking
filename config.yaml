@@ -5,6 +5,17 @@ state: data/state.json
 account:
   username: student@myuct.ac.za
 
+patron:
+  fname: First
+  lname: Last
+  email: student@myuct.ac.za
+  answers:
+    q10382: STUDENT001
+    q18627: Undergraduate
+    q18840: Engineering & the Built Environment
+    "q18663[]": "Yes "
+    "q18665[]": "Yes"
+
 targets:
   - name: kc-computers
     priority: 1
@@ -19,8 +30,8 @@ targets:
       latest: "19:30"
     want:
       weekdays: [mon, tue, wed, thu, fri, sat]
-      earliest_start: "09:00"
-      latest_end: "17:00"
+      earliest_start: "08:00"
+      latest_end: "19:30"
       minutes: 240
       min_minutes: 120
 
@@ -28,26 +39,40 @@ targets:
     priority: 2
     location: Chancellor Oppenheimer Library
     category: Knowledge Commons Group Study Rooms
+    capacity: Space For 2-6 people
+    answers:
+      q19807: STUDENT001
+      "q18664[]": "Yes"
     rules:
       window_days: 9
       max_minutes_per_day: 240
+      max_minutes_per_booking: 180
+      min_gap_minutes: 180
       earliest: "08:00"
       latest: "22:00"
     want:
-      minutes: 120
+      earliest_start: "08:00"
+      latest_end: "22:00"
+      minutes: 180
       min_minutes: 60
 
   - name: research-commons-seminar
     priority: 3
     location: Chancellor Oppenheimer Library
     category: Seminar Room
+    capacity: Space For 1-7 people
+    answers:
+      q22603: Undergraduate
+      "q22604[]": "Yes"
     rules:
       window_days: 9
       max_minutes_per_day: 240
       earliest: "08:00"
       latest: "22:00"
     want:
-      minutes: 120
+      earliest_start: "08:00"
+      latest_end: "22:00"
+      minutes: 240
       min_minutes: 60
 
   - name: business-corner
@@ -60,47 +85,80 @@ targets:
       earliest: "08:00"
       latest: "19:30"
     want:
-      minutes: 120
+      earliest_start: "08:00"
+      latest_end: "22:00"
+      minutes: 240
       min_minutes: 60
 
   - name: snape-lounge-rooms
     priority: 5
     location: Library Learning Lounges (Chris Hani and Snape)
     category: Snape Library Learning Lounge Group Study Rooms
+    capacity: Space For 2-10 people
+    answers:
+      q19807: STUDENT001
+      "q18664[]": "Yes"
     rules:
       window_days: 9
       max_minutes_per_day: 240
+      max_minutes_per_booking: 180
+      min_gap_minutes: 180
       earliest: "08:00"
       latest: "22:00"
     want:
-      minutes: 120
+      earliest_start: "08:00"
+      latest_end: "22:00"
+      minutes: 180
       min_minutes: 60
 
   - name: chris-hani-training
     priority: 6
     location: Library Learning Lounges (Chris Hani and Snape)
     category: Chris Hani Library Learning Lounge Training Facility
+    capacity: Space For 2-10 people
+    answers:
+      q19807: STUDENT001
+      "q18664[]": "Yes"
     rules:
       window_days: 9
       max_minutes_per_day: 240
+      max_minutes_per_booking: 180
+      min_gap_minutes: 180
       earliest: "08:00"
       latest: "22:00"
     want:
-      minutes: 120
+      earliest_start: "08:00"
+      latest_end: "22:00"
+      minutes: 180
       min_minutes: 60
 
   - name: lseg-workspace
     priority: 7
     location: Virtual Business Corner
     category: LSEG Workspace
+    capacity: Space For 2-6 people
+    answers:
+      "q18628[]":
+        - "Terms and Conditions "
+        - "Check out in 15 min"
     rules:
+      # A virtual terminal, open around the clock in one hour slots.
+      slot_minutes: 60
       window_days: 9
       max_minutes_per_day: 240
-      earliest: "08:00"
-      latest: "19:30"
+      max_minutes_per_booking: 120
+      max_bookings_per_day: 1
+      earliest: "00:00"
+      latest: "23:59"
     want:
+      earliest_start: "00:00"
+      latest_end: "23:59"
       minutes: 120
       min_minutes: 60
+      step_minutes: 60
+
+max_bookings_per_day: null
+allow_overlap: true
 
 checkin:
   enabled: true

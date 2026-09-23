@@ -84,3 +84,30 @@ minus anything identifying the account. `summary.md` in that directory lists the
 
 `data/recon/` and `data/debug/` are gitignored. Only a reviewed, redacted capture should ever
 be promoted into `tests/fixtures/`.
+
+## Running it unattended
+
+```bash
+just link      # symlink the systemd units into user scope
+just start     # enable the timers
+just next      # when they next fire
+just logs
+```
+
+Three timers, all scheduled in UTC on purpose. Africa/Johannesburg is UTC+2 the year round while
+the server that runs this is not, so a local-time expression would drift by an hour twice a year
+and miss the window opening entirely.
+
+- `uct-edge` at 22:02 UTC, which is 00:02 in Cape Town, takes the day that has just entered the
+  booking window.
+- `uct-backfill` twice a day, picking up slots other people have released.
+- `uct-checkin` hourly through the day.
+
+Mail goes out only when something was booked or lost. A daily "nothing to report" only teaches you
+to ignore the sender. Set `GMAIL_TO`, `GMAIL_FROM` and `GMAIL_APP_PASSWORD` in `.env`.
+
+## Limits
+
+`LIMITS.md` records every rule LibCal enforces, quoted from the refusals that revealed them. It is
+worth reading before changing `config.yaml`, because most of the limits are per category and none
+of them are documented anywhere else.

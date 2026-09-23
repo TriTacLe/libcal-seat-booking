@@ -72,6 +72,8 @@ class TargetSpec(BaseModel):
     rules: Rules = Rules()
     want: Want = Want()
     items: ItemPrefs = ItemPrefs()
+    # Categories ask different custom questions, so a target can add its own.
+    answers: dict[str, str | list[str]] = {}
 
     @model_validator(mode="after")
     def check_against_rules(self) -> "TargetSpec":
@@ -85,6 +87,34 @@ class TargetSpec(BaseModel):
             if value % self.rules.slot_minutes:
                 raise ValueError(f"want.{field} must be a multiple of {self.rules.slot_minutes}")
         return self
+
+
+class Patron(BaseModel):
+    """What the booking form asks for. The qNNNNN keys are UCT's own custom
+    questions, so they live in config rather than in code."""
+
+    fname: str = ""
+    lname: str = ""
+    email: str = ""
+    # A value may be a list: some consents are several checkboxes sharing a name
+    # and every one of them has to be ticked.
+    answers: dict[str, str | list[str]] = {}
+
+    def fields(self) -> dict[str, str | list[str]]:
+        out: dict[str, str | list[str]] = {
+            "fname": self.fname,
+            "lname": self.lname,
+            "email": self.email,
+        }
+        out.update(self.answers)
+        return out
+
+    @field_validator("email")
+    @classmethod
+    def check_uct_address(cls, v: str) -> str:
+        if v and not v.lower().endswith(("@uct.ac.za", "@myuct.ac.za")):
+            raise ValueError("LibCal only accepts @uct.ac.za or @myuct.ac.za addresses")
+        return v
 
 
 class Account(BaseModel):
@@ -128,8 +158,13 @@ class Config(BaseModel):
     catalogue: Path = Path("data/catalogue.yaml")
     state: Path = Path("data/state.json")
     account: Account = Account()
+    patron: Patron = Patron()
     targets: list[TargetSpec]
     checkin: CheckinConfig = CheckinConfig()
+    # No ceiling by default. Set it to hold back if the library objects.
+    max_bookings_per_day: int | None = None
+    # Take an overlapping slot rather than nothing once the free time runs out.
+    allow_overlap: bool = True
     notifications: NotificationsConfig = NotificationsConfig()
 
     @field_validator("timezone")

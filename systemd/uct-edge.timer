@@ -1,0 +1,12 @@
+[Unit]
+Description=Grab the newly opened day as the window rolls
+
+[Timer]
+# 22:02 UTC is 00:02 in Cape Town all year. South Africa has no DST and this
+# machine does, so a local-time expression would drift by an hour twice a year.
+OnCalendar=*-*-* 22:02:00 UTC
+RandomizedDelaySec=180
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,22 +1,39 @@
 from __future__ import annotations
 
 import logging
+import re
 import sys
-from datetime import date
+import time
+from datetime import date, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import httpx
 import typer
 from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
 
-from uctbook import auth
+from uctbook import accessible, auth, mailimport, notifier
 from uctbook import catalogue as cat
+from uctbook.clock import now as now_in
 from uctbook.clock import today as today_in
 from uctbook.config import Config, TargetSpec, load_config
-from uctbook.libcal import GridQuery, LibCalError, ReadClient
+from uctbook.libcal import (
+    BookingClient,
+    CategoryFull,
+    GridQuery,
+    LibCalError,
+    ReadClient,
+    check_in,
+    release,
+)
+from uctbook.libcal import (
+    cancel as libcal_cancel,
+)
+from uctbook.models import HeldBooking
 from uctbook.planner import choose, window_edge
 from uctbook.recon import Capture, account_secrets
+from uctbook.state import Ledger
 
 app = typer.Typer(add_completion=False, pretty_exceptions_show_locals=False)
 recon_app = typer.Typer(add_completion=False, help="Record the booking calls once, by hand.")
@@ -106,7 +123,7 @@ def slots(
     spec = cfg.target(target)
     catalogue = cat.load(cfg.catalogue)
     tz = cfg.zone
-    wanted = date.fromisoformat(day) if day else window_edge(today_in(tz), spec.rules.window_days)
+    wanted = _as_date(day, tz) if day else window_edge(today_in(tz), spec.rules.window_days)
 
     client = ReadClient(tz, eid_by_seat=catalogue.eid_by_seat())
     try:
@@ -156,7 +173,7 @@ def plan(
     try:
         for spec in specs:
             wanted = (
-                date.fromisoformat(day)
+                _as_date(day, tz)
                 if day
                 else window_edge(today_in(tz), spec.rules.window_days)
             )
@@ -183,11 +200,458 @@ def plan(
 
 
 @app.command()
+def status(
+    config: Path = typer.Option(Path("config.yaml"), "--config", "-c"),
+    all_rows: bool = typer.Option(False, "--all", help="Include past bookings."),
+) -> None:
+    """List what the ledger says is booked."""
+    cfg = _load(config)
+    tz = cfg.zone
+    ledger = Ledger.load(cfg.state, tz)
+    rows = ledger.bookings if all_rows else ledger.live(now_in(tz))
+    if not rows:
+        print("Nothing booked." if all_rows else "Nothing upcoming.")
+        return
+
+    by_day: dict[date, list[HeldBooking]] = {}
+    for booking in sorted(rows, key=lambda b: (b.day, b.start)):
+        by_day.setdefault(booking.day, []).append(booking)
+
+    total = 0
+    for wanted, bookings in by_day.items():
+        minutes = sum(int((b.end - b.start).total_seconds() // 60) for b in bookings)
+        total += minutes
+        print(f"\n{wanted:%a %d %b}  {len(bookings)} booking(s), {minutes} min")
+        for b in bookings:
+            code = b.checkin_code or "no code"
+            print(
+                f"  {b.start:%H:%M}-{b.end:%H:%M}  {b.target:<24} {code:<8} "
+                f"{'cancellable' if b.cancel_token else ''}"
+            )
+    print(f"\n{len(rows)} booking(s), {total} min total.")
+
+
+@app.command()
+def mail_import(
+    rows: Path = typer.Argument(..., help="JSON produced by scraping the mailbox."),
+    config: Path = typer.Option(Path("config.yaml"), "--config", "-c"),
+) -> None:
+    """Fill in check-in codes and cancel tokens from the confirmation mails."""
+    cfg = _load(config)
+    tz = cfg.zone
+    ledger = Ledger.load(cfg.state, tz)
+    catalogue = cat.load(cfg.catalogue)
+    labels = {seat.id: seat.name for seat in catalogue.seats}
+
+    parsed = mailimport.load_rows(rows)
+    filled = mailimport.apply(ledger, parsed, tz, labels)
+    added = mailimport.adopt(ledger, parsed, tz, catalogue)
+    missing = [b for b in ledger.live(now_in(tz)) if not b.checkin_code]
+    print(f"Filled {filled}, adopted {added}. {len(missing)} upcoming still without a code.")
+
+
+@app.command()
+def digest(
+    send: bool = typer.Option(False, "--send", help="Mail it as well as printing it."),
+    config: Path = typer.Option(Path("config.yaml"), "--config", "-c"),
+) -> None:
+    """One overview of everything booked, instead of a mail per booking."""
+    cfg = _load(config)
+    tz = cfg.zone
+    ledger = Ledger.load(cfg.state, tz)
+    catalogue = cat.load(cfg.catalogue)
+    places = _places(catalogue)
+    upcoming = ledger.live(now_in(tz))
+
+    print(notifier.schedule(upcoming, places))
+    if send and not notifier.digest(cfg, upcoming, places):
+        print("Mail not sent: check the gmail settings in the config.", file=sys.stderr)
+
+
+def _places(catalogue: cat.Catalogue) -> dict[int, str]:
+    """Resource id to something worth reading in a mail."""
+    where = {loc.id: loc.name for loc in catalogue.locations}
+    out = {}
+    for seat in catalogue.seats:
+        building = where.get(seat.location, "")
+        out[seat.id] = f"{seat.name or seat.id}, {building}" if building else seat.name
+    return out
+
+
+@app.command()
+def cancel(
+    day: str = typer.Option("", "--date", "-d", help="Only this day."),
+    target: str = typer.Option("", "--target", "-t", help="Only this category."),
+    commit: bool = typer.Option(False, "--commit", help="Actually cancel."),
+    config: Path = typer.Option(Path("config.yaml"), "--config", "-c"),
+) -> None:
+    """Release bookings. Dry run unless --commit is given."""
+    cfg = _load(config)
+    tz = cfg.zone
+    ledger = Ledger.load(cfg.state, tz)
+
+    wanted = [b for b in ledger.live(now_in(tz))]
+    if day:
+        chosen = _as_date(day, tz)
+        wanted = [b for b in wanted if b.day == chosen]
+    if target:
+        wanted = [b for b in wanted if b.target == target]
+    if not wanted:
+        print("Nothing matches.")
+        return
+
+    booker = BookingClient(tz)
+    released = 0
+    try:
+        for booking in wanted:
+            when = f"{booking.day} {booking.start:%H:%M}-{booking.end:%H:%M}"
+            if not booking.cancel_token:
+                print(f"{booking.target}: {when} has no cancel token, use the mail link")
+                continue
+            if not commit:
+                print(f"{booking.target}: would cancel {when}")
+                continue
+            if libcal_cancel(booking.cancel_token, booker.http):
+                booking.status = "cancelled"
+                released += 1
+                print(f"{booking.target}: cancelled {when}")
+            else:
+                print(f"{booking.target}: cancel refused for {when}", file=sys.stderr)
+    finally:
+        booker.close()
+        if commit:
+            ledger.save()
+    if commit:
+        print(f"\nCancelled {released}.")
+
+
+@app.command()
+def checkin(
+    commit: bool = typer.Option(False, "--commit", help="Actually check in."),
+    config: Path = typer.Option(Path("config.yaml"), "--config", "-c"),
+) -> None:
+    """Check in to any booking that has just started.
+
+    A booking is released if nobody checks in within 15 minutes. That rule is
+    how the library recovers seats from no-shows, so this only makes sense for
+    bookings you are actually going to use.
+    """
+    cfg = _load(config)
+    tz = cfg.zone
+    if not cfg.checkin.enabled:
+        print("checkin.enabled is false in the config.")
+        return
+
+    ledger = Ledger.load(cfg.state, tz)
+    due = ledger.due_checkin(now_in(tz), cfg.checkin.offset_minutes)
+    if not due:
+        print("Nothing due.")
+        return
+
+    booker = BookingClient(tz)
+    done = 0
+    try:
+        for booking in due:
+            when = f"{booking.day} {booking.start:%H:%M}"
+            if not commit:
+                print(f"{booking.target}: would check in {when} with {booking.checkin_code}")
+                continue
+            if check_in(booking.checkin_code, booker.http):
+                booking.status = "checked-in"
+                done += 1
+                print(f"{booking.target}: checked in {when}")
+            else:
+                print(f"{booking.target}: check-in failed {when}", file=sys.stderr)
+    finally:
+        booker.close()
+        if commit:
+            ledger.save()
+    if commit:
+        print(f"\nChecked in {done}.")
+
+
+@app.command()
+def fields(
+    target: str = typer.Option(..., "--target", "-t"),
+    day: str = typer.Option("", "--date", "-d"),
+    config: Path = typer.Option(Path("config.yaml"), "--config", "-c"),
+    verbose: bool = typer.Option(False, "--verbose", "-v"),
+) -> None:
+    """Show the questions a category's booking form asks, then let the hold go.
+
+    Categories do not ask the same things, and UCT can add a question whenever
+    they like, so this reads the form rather than trusting the config.
+    """
+    _logging(verbose)
+    cfg = _load(config)
+    catalogue = cat.load(cfg.catalogue)
+    tz = cfg.zone
+    spec = cfg.target(target)
+    wanted = _as_date(day, tz) if day else window_edge(today_in(tz), spec.rules.window_days)
+
+    query = _query(spec, catalogue)
+    booker = BookingClient(tz)
+    try:
+        html = accessible.fetch(
+            query.lid, query.gid, query.zone, query.capacity, wanted, booker.http
+        )
+        slots = accessible.parse_slots(html, tz)
+        block = choose(slots, spec, wanted, [], accessible.parse_labels(html))
+        if block is None:
+            print(f"{spec.name}: nothing free on {wanted} to hold.", file=sys.stderr)
+            raise typer.Exit(1)
+
+        hold = booker.hold(block, query.lid, query.gid, query.zone, query.capacity)
+        try:
+            asked = _form_fields(hold.html)
+            answers = {**cfg.patron.fields(), **spec.answers}
+            print(f"{spec.name}, form on {wanted}:")
+            for name, label in asked:
+                state = "answered" if name in answers else "MISSING"
+                print(f"  {name:<12} {state:<9} {label}")
+            missing = [n for n, _ in asked if n not in answers]
+            if missing:
+                print(f"\nAdd to the target's answers: {', '.join(missing)}")
+        finally:
+            release(hold, booker.http)
+            print("\nHold released.")
+    except LibCalError as e:
+        print(str(e), file=sys.stderr)
+        raise typer.Exit(1)
+    finally:
+        booker.close()
+
+
+def _form_fields(html: str) -> list[tuple[str, str]]:
+    """Required inputs on the booking form, with their labels.
+
+    Real custom questions are always qNNNNN. Anything else alongside the name
+    and email fields is a trap LibCal plants and strips with a script, and
+    filling one is how a bot announces itself.
+    """
+    known = {"fname", "lname", "email"}
+    labels = dict(re.findall(r'for="(q\d+)"[^>]*>\s*([^<\n]{2,60}?)\s*\n', html))
+    seen: list[tuple[str, str]] = []
+    for name in re.findall(r'<(?:input|select|textarea)[^>]*name="([^"]+)"', html):
+        bare = name.removesuffix("[]")
+        if bare not in known and not re.fullmatch(r"q\d+", bare):
+            continue
+        if any(name == s[0] for s in seen):
+            continue
+        seen.append((name, labels.get(bare, "")))
+    return seen
+
+
+@app.command()
+def book(
+    target: str = typer.Option("", "--target", "-t", help="Default: every enabled target."),
+    day: str = typer.Option("", "--date", "-d"),
+    from_date: str = typer.Option("", "--from", help="First day of a range."),
+    to_date: str = typer.Option("", "--to", help="Last day of a range, window edge if omitted."),
+    start_time: str = typer.Option("", "--start-time", help="Override the daily search window."),
+    end_time: str = typer.Option("", "--end-time"),
+    pause: float = typer.Option(1.5, "--pause", help="Seconds between LibCal calls."),
+    commit: bool = typer.Option(False, "--commit", help="Actually book. Without it, a dry run."),
+    config: Path = typer.Option(Path("config.yaml"), "--config", "-c"),
+    verbose: bool = typer.Option(False, "--verbose", "-v"),
+) -> None:
+    """Book the planned block. Dry run unless --commit is given."""
+    _logging(verbose)
+    cfg = _load(config)
+    catalogue = cat.load(cfg.catalogue)
+    tz = cfg.zone
+    specs = [cfg.target(target)] if target else cfg.active()
+
+    if commit and not cfg.patron.email:
+        print("No patron email in the config, so there is nothing to book with.", file=sys.stderr)
+        raise typer.Exit(1)
+
+    ledger = Ledger.load(cfg.state, tz)
+    before = {b.ref for b in ledger.bookings}
+    reader = ReadClient(tz, eid_by_seat=catalogue.eid_by_seat())
+    booker = BookingClient(tz)
+    booked = failed = 0
+    try:
+        for spec in specs:
+            if start_time:
+                spec.want.earliest_start = start_time
+            if end_time:
+                spec.want.latest_end = end_time
+            for wanted in _days(spec, tz, day, from_date, to_date):
+                made, lost = _fill_category(
+                    spec, wanted, catalogue, reader, booker, cfg, ledger, commit, tz, pause
+                )
+                booked += made
+                failed += lost
+    except LibCalError as e:
+        print(str(e), file=sys.stderr)
+        raise typer.Exit(1)
+    finally:
+        reader.close()
+        booker.close()
+        if commit:
+            ledger.save()
+
+    if commit:
+        print(f"\nBooked {booked}, failed {failed}.")
+        fresh = [b for b in ledger.bookings if b.ref not in before]
+        if fresh:
+            notifier.digest(cfg, ledger.live(now_in(tz)), _places(catalogue))
+    if failed:
+        raise typer.Exit(1)
+
+
+def _as_date(value: str, tz: ZoneInfo) -> date:
+    """Accepts a date, or "today", which is what a timer wants to say."""
+    if value.strip().casefold() in ("today", "now"):
+        return today_in(tz)
+    return date.fromisoformat(value)
+
+
+def _days(spec: TargetSpec, tz: ZoneInfo, day: str, from_date: str, to_date: str) -> list[date]:
+    edge = window_edge(today_in(tz), spec.rules.window_days)
+    if day:
+        return [_as_date(day, tz)]
+    if not from_date:
+        return [edge]
+    cursor = _as_date(from_date, tz)
+    last = _as_date(to_date, tz) if to_date else edge
+    days = []
+    while cursor <= last:
+        days.append(cursor)
+        cursor += timedelta(days=1)
+    return days
+
+
+def _fill_category(
+    spec: TargetSpec,
+    wanted: date,
+    catalogue: cat.Catalogue,
+    reader: ReadClient,
+    booker: BookingClient,
+    cfg: Config,
+    ledger: Ledger,
+    commit: bool,
+    tz: ZoneInfo,
+    pause: float,
+) -> tuple[int, int]:
+    """Book this category until its own daily cap is used up.
+
+    Prefers blocks that do not clash with anything already held, and only falls
+    back to an overlapping one when the free time has run out, because securing
+    the hours matters more than them being usable back to back.
+    """
+    booked = failed = 0
+    query = _query(spec, catalogue)
+    page = reader.grid(query, wanted)
+    if page.window_end:
+        print(f"{spec.name}: {wanted} is past the booking window")
+        return 0, 0
+
+    if ledger.is_full(spec.name, wanted):
+        print(f"{spec.name}: {wanted} already known full")
+        return 0, 0
+
+    while True:
+        used = ledger.minutes(wanted, spec.name)
+        if spec.rules.max_minutes_per_day - used < spec.want.min_minutes:
+            break
+        ceiling = cfg.max_bookings_per_day
+        if ceiling is not None and ledger.count(wanted) >= ceiling:
+            break
+        own = spec.rules.max_bookings_per_day
+        if own is not None and len(
+            [b for b in ledger.for_day(wanted) if b.target == spec.name]
+        ) >= own:
+            break
+
+        # Re-read every time: booking a block invalidates the checksums it used.
+        html = accessible.fetch(
+            query.lid, query.gid, query.zone, query.capacity, wanted, booker.http
+        )
+        slots = accessible.parse_slots(html, tz)
+        labels = {**catalogue.labels(), **accessible.parse_labels(html)}
+        held = ledger.for_day(wanted)
+
+        block = choose(slots, spec, wanted, held, labels)
+        if block is None and cfg.allow_overlap:
+            block = choose(slots, spec, wanted, held, labels, allow_overlap=True)
+        if block is None:
+            if booked == 0:
+                print(f"{spec.name}: nothing bookable on {wanted}")
+            break
+        if ledger.has(spec.name, block):
+            break
+
+        label = labels.get(block.key, str(block.key))
+        when = f"{wanted} {block.start.strftime('%H:%M')}-{block.end.strftime('%H:%M')}"
+        if not commit:
+            print(f"{spec.name}: would book {label} {when} ({block.minutes} min)")
+            ledger.add(spec.name, block)
+            continue
+
+        try:
+            hold = booker.hold(block, query.lid, query.gid, query.zone, query.capacity)
+        except CategoryFull as e:
+            ledger.mark_full(spec.name, wanted, str(e))
+            print(f"{spec.name}: {wanted} is full ({e})")
+            break
+        except LibCalError as e:
+            print(f"{spec.name}: could not hold {label} {when}: {e}", file=sys.stderr)
+            failed += 1
+            break
+
+        try:
+            done = booker.submit(
+                hold, block, query.lid, {**cfg.patron.fields(), **spec.answers}
+            )
+        except CategoryFull as e:
+            release(hold, booker.http)
+            ledger.mark_full(spec.name, wanted, str(e))
+            print(f"{spec.name}: {wanted} is full ({e})")
+            break
+        except LibCalError as e:
+            release(hold, booker.http)
+            print(f"{spec.name}: refused {label} {when}: {e}", file=sys.stderr)
+            failed += 1
+            break
+
+        entry = ledger.add(spec.name, block)
+        entry.booking_id = done.booking_id
+        entry.cancel_token = done.cancel_token
+        entry.checkin_code = done.checkin_code
+        ledger.save()
+        booked += 1
+        print(f"{spec.name}: booked {label} {when} ({block.minutes} min)")
+        # Space the calls out. This is a university server, not a target.
+        time.sleep(pause)
+
+    return booked, failed
+
+
+def _wait_for_confirmation(page: "object", capture: Capture, timeout_ms: int) -> None:
+    """Stop once a booking has actually been submitted, so the capture is not
+    cut short and does not sit open longer than it needs to."""
+    waited = 0
+    while waited < timeout_ms:
+        try:
+            page.wait_for_timeout(2_000)  # type: ignore[attr-defined]
+        except Exception:
+            return
+        waited += 2_000
+        if capture.saw_booking_submit():
+            page.wait_for_timeout(3_000)  # type: ignore[attr-defined]
+            return
+
+
+@app.command()
 def login(
+    wait_minutes: int = typer.Option(10, "--wait-minutes", "-w"),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Open a browser, sign in to UCT, and keep the session.
 
+    Waits for a LibCal session cookie to appear rather than for a keypress.
     Records which hosts the sign-in passes through and which cookies each one
     sets, so the automatic re-auth can be written against what actually happens
     rather than a guess. Cookie values are never written down.
@@ -200,28 +664,30 @@ def login(
         recorder = auth.ChainRecorder(page, ctx)
         auth.goto_with_retry(page, auth.ENTRY_URL)
 
-        print("Sign in to UCT in the browser window, then come back here.")
-        print("Stop once LibCal shows you as signed in.")
-        input("Press Enter when you are done: ")
+        print("Sign in to UCT in the browser window that just opened.")
+        print(f"Waiting up to {wait_minutes} minute(s) for the session.")
+        signed_in = auth.wait_for_login(ctx, page, timeout_ms=wait_minutes * 60_000)
 
         auth.save_session(ctx)
         out = recorder.write()
-        signed_in = auth.is_authenticated(page)
         auth.close_session(browser, ctx, page)
 
-    print(f"Session saved to {auth.STATE_FILE}")
     print(f"Sign-in chain recorded in {out}")
-    if not signed_in:
+    if signed_in:
+        print(f"Session saved to {auth.STATE_FILE}")
+    else:
         print(
-            "Could not see a signed-in marker on the page. The session was still "
-            "saved; check the recorded page.html before relying on it.",
+            f"No LibCal session cookie after {wait_minutes} minute(s). "
+            f"Whatever was there is still saved; check {out}/page.png.",
             file=sys.stderr,
         )
+        raise typer.Exit(1)
 
 
 @recon_app.command("capture")
 def recon_capture(
     label: str = typer.Option("booking", "--label", "-l"),
+    wait_minutes: int = typer.Option(15, "--wait-minutes", "-w"),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Record one real booking made by hand.
@@ -241,7 +707,8 @@ def recon_capture(
 
         print("Make one short booking in the browser window.")
         print("Go all the way to the confirmation page.")
-        input("Press Enter once the booking is confirmed: ")
+        print(f"Recording for up to {wait_minutes} minute(s), or until the browser closes.")
+        _wait_for_confirmation(page, capture, wait_minutes * 60_000)
 
         auth.save_session(ctx)
         out = capture.write(label)
