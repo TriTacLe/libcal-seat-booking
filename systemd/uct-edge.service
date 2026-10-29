@@ -6,8 +6,8 @@ OnFailure=uct-notify-failure.service
 
 [Service]
 Type=oneshot
-WorkingDirectory=/home/tri/Desktop/personal/uct-room-booking
+WorkingDirectory=/home/tri/Desktop/personal/libcal-seat-booking
 Environment=TZ=Africa/Johannesburg
 ExecStartPre=/bin/sh -c 'for i in $(seq 1 60); do getent hosts uct.ac.za.libcal.com >/dev/null 2>&1 && exit 0; sleep 5; done; echo "DNS not ready" >&2; exit 1'
-ExecStart=/home/tri/Desktop/personal/uct-room-booking/.venv/bin/uct book --commit --pause 2
+ExecStart=/home/tri/Desktop/personal/libcal-seat-booking/.venv/bin/uct book --commit --pause 2
 TimeoutStartSec=3600

@@ -1,4 +1,4 @@
-# uct-room-booking
+# libcal-seat-booking
 
 Automates seat and room booking on UCT's LibCal at `uct.ac.za.libcal.com`.
 

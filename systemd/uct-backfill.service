@@ -6,7 +6,7 @@ OnFailure=uct-notify-failure.service
 
 [Service]
 Type=oneshot
-WorkingDirectory=/home/tri/Desktop/personal/uct-room-booking
+WorkingDirectory=/home/tri/Desktop/personal/libcal-seat-booking
 Environment=TZ=Africa/Johannesburg
-ExecStart=/home/tri/Desktop/personal/uct-room-booking/.venv/bin/uct book --from today --commit --pause 2
+ExecStart=/home/tri/Desktop/personal/libcal-seat-booking/.venv/bin/uct book --from today --commit --pause 2
 TimeoutStartSec=3600
