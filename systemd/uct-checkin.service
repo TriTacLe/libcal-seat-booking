@@ -5,6 +5,6 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-WorkingDirectory=/home/tri/Desktop/personal/uct-room-booking
+WorkingDirectory=/home/tri/Desktop/personal/libcal-seat-booking
 Environment=TZ=Africa/Johannesburg
-ExecStart=/home/tri/Desktop/personal/uct-room-booking/.venv/bin/uct checkin --commit
+ExecStart=/home/tri/Desktop/personal/libcal-seat-booking/.venv/bin/uct checkin --commit
