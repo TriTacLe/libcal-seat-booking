@@ -2,8 +2,8 @@
 
 Automates seat and room booking on UCT's LibCal at `uct.ac.za.libcal.com`.
 
-Reading availability needs no login, so `discover`, `slots` and `plan` work out of the box.
-Booking needs the UCT SSO session and is not wired up yet.
+Neither availability nor booking needs a login: LibCal gates booking on a UCT email address,
+not on a session.
 
 ## Install
 
@@ -18,6 +18,12 @@ uv run uct discover                      # write data/catalogue.yaml from the li
 uv run uct slots -t kc-computers         # availability for the window edge
 uv run uct slots -t kc-computers -d 2026-10-05
 uv run uct plan                          # the block it would book, for every enabled target
+uv run uct book --commit                 # fill every enabled target's quota for the window edge
+uv run uct status                        # what the ledger says is booked
+uv run uct checkin --commit              # check in to anything that has just started
+uv run uct cancel -t kc-computers -d 2026-10-05
+uv run uct mail-import rows.json         # fill in check-in codes and cancel tokens from mail
+uv run uct digest --send                 # one overview of everything booked
 ```
 
 `discover` writes the catalogue that `config.yaml` refers to by name. Re-run it when UCT
@@ -94,14 +100,15 @@ just next      # when they next fire
 just logs
 ```
 
-Three timers, all scheduled in UTC on purpose. Africa/Johannesburg is UTC+2 the year round while
+Four timers, all scheduled in UTC on purpose. Africa/Johannesburg is UTC+2 the year round while
 the server that runs this is not, so a local-time expression would drift by an hour twice a year
 and miss the window opening entirely.
 
 - `uct-edge` at 22:02 UTC, which is 00:02 in Cape Town, takes the day that has just entered the
   booking window.
 - `uct-backfill` twice a day, picking up slots other people have released.
-- `uct-checkin` hourly through the day.
+- `uct-checkin` every five minutes through the library day, since the check-in window is 15.
+- `uct-digest` every morning, mailing the day's overview.
 
 Mail goes out only when something was booked or lost. A daily "nothing to report" only teaches you
 to ignore the sender. Set `GMAIL_TO`, `GMAIL_FROM` and `GMAIL_APP_PASSWORD` in `.env`.
