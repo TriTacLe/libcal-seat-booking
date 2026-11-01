@@ -7,6 +7,7 @@ from a parsed grid plus the bookings already held.
 from __future__ import annotations
 
 from datetime import date, datetime, timedelta
+from itertools import combinations_with_replacement
 
 from uctbook.config import TargetSpec
 from uctbook.models import Block, HeldBooking, Run, Slot
@@ -165,6 +166,118 @@ def choose(
             return min(blocks, key=lambda b: _rank(b, spec, labels))
         wanted -= step
     return None
+
+
+def _lengths(spec: TargetSpec) -> list[int]:
+    return list(range(spec.want.min_minutes, spec.want.minutes + 1, spec.want.step_minutes))
+
+
+def _max_count(spec: TargetSpec, remaining: int, held: list[HeldBooking]) -> int:
+    by_quota = remaining // spec.want.min_minutes
+    cap = spec.rules.max_bookings_per_day
+    if cap is None:
+        return by_quota
+    already = sum(1 for h in held if h.target == spec.name)
+    return min(by_quota, max(cap - already, 0))
+
+
+def _place(
+    lengths: tuple[int, ...],
+    all_runs: list[Run],
+    spec: TargetSpec,
+    window_start: datetime,
+    window_end: datetime,
+    held: list[HeldBooking],
+    labels: dict[int, str],
+    allow_overlap: bool,
+) -> list[Block]:
+    """Try to fit each length in order, earliest slot first. Stops at the
+    first one that does not fit rather than skipping ahead to the next."""
+    placed: list[Block] = []
+    busy = list(held)
+    for minutes in lengths:
+        candidates_here = [
+            b
+            for b in candidates(all_runs, spec, window_start, window_end, minutes)
+            if not excluded(b, spec, labels)
+            and not too_close(b, busy, spec.name, spec.rules.min_gap_minutes)
+            and (allow_overlap or not overlaps(b, busy))
+        ]
+        if not candidates_here:
+            break
+        chosen = min(candidates_here, key=lambda b: (b.start, b.key))
+        placed.append(chosen)
+        busy.append(
+            HeldBooking(
+                ref="",
+                target=spec.name,
+                day=chosen.start.date(),
+                start=chosen.start,
+                end=chosen.end,
+                key=chosen.key,
+            )
+        )
+    return placed
+
+
+def plan_day(
+    slots: list[Slot],
+    spec: TargetSpec,
+    day: date,
+    held: list[HeldBooking],
+    labels: dict[int, str] | None = None,
+    allow_overlap: bool = False,
+) -> Block | None:
+    """Best next block for one target on one day.
+
+    choose() alone is greedy: it always asks for the full want.minutes first,
+    which can grab an early long block and strand what is left of the day's
+    quota behind the gap rule. This instead searches the handful of legal
+    ways to split what remains of the quota into booking sized pieces, finds
+    which split actually fits the free runs, and returns the first block of
+    whichever split books the most total minutes.
+    """
+    labels = labels or {}
+    if not spec.want.allows(day.weekday()):
+        return None
+
+    tz = slots[0].start.tzinfo if slots else None
+    if tz is None:
+        return None
+
+    window_start = datetime.combine(day, spec.want.earliest_start_time).replace(tzinfo=tz)
+    window_end = datetime.combine(day, spec.want.latest_end_time).replace(tzinfo=tz)
+    rules_start = datetime.combine(day, spec.rules.earliest_time).replace(tzinfo=tz)
+    rules_end = datetime.combine(day, spec.rules.latest_time).replace(tzinfo=tz)
+    window_start = max(window_start, rules_start)
+    window_end = min(window_end, rules_end)
+    if window_start >= window_end:
+        return None
+
+    remaining = spec.rules.max_minutes_per_day - minutes_used(day, held, spec.name)
+    if remaining < spec.want.min_minutes:
+        return None
+
+    all_runs = runs(slots)
+    lengths = _lengths(spec)
+    max_count = _max_count(spec, remaining, held)
+    if max_count < 1:
+        return None
+
+    best: list[Block] = []
+    for count in range(1, max_count + 1):
+        for combo in combinations_with_replacement(reversed(lengths), count):
+            if sum(combo) > remaining:
+                continue
+            for order in (combo, tuple(reversed(combo))):
+                placed = _place(
+                    order, all_runs, spec, window_start, window_end, held, labels, allow_overlap
+                )
+                if len(placed) != len(order):
+                    continue
+                if sum(b.minutes for b in placed) > sum(b.minutes for b in best):
+                    best = placed
+    return best[0] if best else None
 
 
 def window_edge(today: date, window_days: int) -> date:

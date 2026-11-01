@@ -31,7 +31,7 @@ from uctbook.libcal import (
     cancel as libcal_cancel,
 )
 from uctbook.models import HeldBooking
-from uctbook.planner import choose, window_edge
+from uctbook.planner import choose, plan_day, window_edge
 from uctbook.recon import Capture, account_secrets
 from uctbook.state import Ledger
 
@@ -150,8 +150,7 @@ def slots(
         first, last = open_slots[0].start, open_slots[-1].end
         mins = len(open_slots) * spec.rules.slot_minutes
         print(
-            f"  {label:<8} {mins:>4} min free, "
-            f"{first.strftime('%H:%M')}-{last.strftime('%H:%M')}"
+            f"  {label:<8} {mins:>4} min free, {first.strftime('%H:%M')}-{last.strftime('%H:%M')}"
         )
 
 
@@ -172,11 +171,7 @@ def plan(
     client = ReadClient(tz, eid_by_seat=catalogue.eid_by_seat())
     try:
         for spec in specs:
-            wanted = (
-                _as_date(day, tz)
-                if day
-                else window_edge(today_in(tz), spec.rules.window_days)
-            )
+            wanted = _as_date(day, tz) if day else window_edge(today_in(tz), spec.rules.window_days)
             page = client.grid(_query(spec, catalogue), wanted)
             if page.window_end:
                 print(f"{spec.name}: {wanted} is past the booking window")
@@ -560,9 +555,10 @@ def _fill_category(
         if ceiling is not None and ledger.count(wanted) >= ceiling:
             break
         own = spec.rules.max_bookings_per_day
-        if own is not None and len(
-            [b for b in ledger.for_day(wanted) if b.target == spec.name]
-        ) >= own:
+        if (
+            own is not None
+            and len([b for b in ledger.for_day(wanted) if b.target == spec.name]) >= own
+        ):
             break
 
         # Re-read every time: booking a block invalidates the checksums it used.
@@ -573,9 +569,9 @@ def _fill_category(
         labels = {**catalogue.labels(), **accessible.parse_labels(html)}
         held = ledger.for_day(wanted)
 
-        block = choose(slots, spec, wanted, held, labels)
+        block = plan_day(slots, spec, wanted, held, labels)
         if block is None and cfg.allow_overlap:
-            block = choose(slots, spec, wanted, held, labels, allow_overlap=True)
+            block = plan_day(slots, spec, wanted, held, labels, allow_overlap=True)
         if block is None:
             if booked == 0:
                 print(f"{spec.name}: nothing bookable on {wanted}")
@@ -602,9 +598,7 @@ def _fill_category(
             break
 
         try:
-            done = booker.submit(
-                hold, block, query.lid, {**cfg.patron.fields(), **spec.answers}
-            )
+            done = booker.submit(hold, block, query.lid, {**cfg.patron.fields(), **spec.answers})
         except CategoryFull as e:
             release(hold, booker.http)
             ledger.mark_full(spec.name, wanted, str(e))

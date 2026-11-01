@@ -3,7 +3,7 @@ from zoneinfo import ZoneInfo
 
 from uctbook.config import TargetSpec
 from uctbook.models import HeldBooking, Slot
-from uctbook.planner import choose, minutes_used, runs, window_edge
+from uctbook.planner import choose, minutes_used, plan_day, runs, window_edge
 
 SAST = ZoneInfo("Africa/Johannesburg")
 DAY = date(2026, 10, 5)  # a Monday
@@ -190,6 +190,29 @@ def test_a_category_that_wants_a_gap_gets_one():
     target.rules.min_gap_minutes = 180
     assert choose(slots(1, "11:00", 12), target, DAY, [existing]) is None
     assert choose(slots(1, "14:00", 12), target, DAY, [existing]) is not None
+
+
+def test_packs_the_day_instead_of_stranding_it():
+    """choose() always asks for the full 180 first, which fills 08:00-10:30
+    and then can't fit anything else before the window closes at 12:30
+    because of the one hour gap rule. A different split uses more of the
+    240 minute daily cap."""
+    target = spec(minutes=180, min_minutes=60, step_minutes=30)
+    target.want.earliest_start = "08:00"
+    target.want.latest_end = "12:30"
+    target.rules.max_minutes_per_day = 240
+    target.rules.min_gap_minutes = 60
+    free = slots(1, "08:00", 54)  # one continuous run, 08:00 to 12:30
+
+    greedy_first = choose(free, target, DAY, [])
+    assert greedy_first is not None and greedy_first.minutes == 180
+    assert choose(free, target, DAY, [held(greedy_first.start.strftime("%H:%M"), 180)]) is None
+
+    first = plan_day(free, target, DAY, [])
+    assert first is not None
+    second = plan_day(free, target, DAY, [held(first.start.strftime("%H:%M"), first.minutes)])
+    assert second is not None
+    assert first.minutes + second.minutes > greedy_first.minutes
 
 
 def test_never_overlaps_inside_one_category():
