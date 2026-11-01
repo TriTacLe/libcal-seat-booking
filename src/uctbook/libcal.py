@@ -159,9 +159,9 @@ BOOK_URL = f"https://{HOST}/ajax/space/book"
 
 # LibCal holds the slots for about five minutes between these two calls.
 _SESSION_RE = re.compile(r'name="session"\s+value="(\d+)"')
-_CANCEL_RE = re.compile(r'/equipment/cancel\?id=([0-9a-f]+)')
+_CANCEL_RE = re.compile(r"/equipment/cancel\?id=([0-9a-f]+)")
 _BOOKING_RE = re.compile(r'Booking_(\d+)\.ics|booking[_-]?id["\s:=]+(\d+)', re.I)
-_CHECKIN_RE = re.compile(r'(?:code|Code)[^<]{0,20}?<strong>([A-Z0-9]{3,8})</strong>')
+_CHECKIN_RE = re.compile(r"(?:code|Code)[^<]{0,20}?<strong>([A-Z0-9]{3,8})</strong>")
 
 
 @dataclass
@@ -184,6 +184,8 @@ def parse_confirmation(html: str) -> Confirmation:
         cancel_token=cancel.group(1) if cancel else "",
         checkin_code=checkin.group(1) if checkin else "",
     )
+
+
 _ACTION_RE = re.compile(r'id="s-lc-eq-bform"[^>]*action="([^"]+)"')
 
 

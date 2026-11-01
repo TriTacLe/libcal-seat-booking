@@ -53,7 +53,7 @@ class Ledger:
                     status=row.get("status", "held"),
                 )
             )
-        return cls(path, bookings, raw.get('full', {}))
+        return cls(path, bookings, raw.get("full", {}))
 
     def save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)

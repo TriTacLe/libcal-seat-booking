@@ -55,7 +55,7 @@ def test_html_has_a_table_per_day_and_marks_missing_codes():
     )
     assert out.count("<table") == 2
     assert "Monday 05 October" in out
-    assert "<strong style=\"font-size:16px;\">2CG</strong>" in out
+    assert '<strong style="font-size:16px;">2CG</strong>' in out
     assert "code in its own mail" in out
     # the building belongs under the room, not glued to it
     assert "KC01<div" in out
