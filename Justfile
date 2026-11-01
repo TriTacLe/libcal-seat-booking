@@ -1,4 +1,4 @@
-image := "ghcr.io/tritacle/uct-room-booking:latest"
+image := "ghcr.io/tritacle/libcal-seat-booking:latest"
 
 # Symlink the units into user scope
 link:
