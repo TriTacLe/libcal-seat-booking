@@ -4,7 +4,7 @@ from zoneinfo import ZoneInfo
 
 import pytest
 
-from uctbook.libcal import GridQuery, LibCalError, _encode, parse_grid
+from uctbook.libcal import GridQuery, LibCalError, _encode, parse_confirmation, parse_grid
 
 SAST = ZoneInfo("Africa/Johannesburg")
 
@@ -120,3 +120,25 @@ def test_booking_payload_shape():
             "checksum": "bbb",
         },
     ]
+
+
+def test_confirmation_pulls_out_the_cancel_token_and_booking_id():
+    html = (
+        '<p>Your booking is confirmed. <a href="/equipment/cancel?id=3d03979feac4">Cancel</a></p>'
+        "<p>Booking_165230.ics</p>"
+    )
+    confirmation = parse_confirmation(html)
+    assert confirmation.cancel_token == "3d03979feac4"
+    assert confirmation.booking_id == "165230"
+    assert confirmation.checkin_code == ""
+
+
+def test_confirmation_reads_a_checkin_code_when_the_page_has_one():
+    html = "<p>Your check-in code: <strong>2CG</strong></p>"
+    assert parse_confirmation(html).checkin_code == "2CG"
+
+
+def test_confirmation_without_a_checkin_code_is_empty():
+    """LibCal mails the code instead of returning it, so this is the common case."""
+    html = "<p>Your booking is confirmed.</p>"
+    assert parse_confirmation(html).checkin_code == ""
