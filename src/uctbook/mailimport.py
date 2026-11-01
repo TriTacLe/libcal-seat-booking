@@ -63,9 +63,7 @@ def adopt(
     The mailbox is the real record of what is held: anything booked before the
     ledger existed, or from another machine, only shows up here.
     """
-    by_name = {
-        seat.name.strip().casefold(): seat for seat in catalogue.seats if seat.name
-    }
+    by_name = {seat.name.strip().casefold(): seat for seat in catalogue.seats if seat.name}
     added = 0
     for row in rows:
         try:

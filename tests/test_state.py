@@ -14,8 +14,18 @@ def block(seat, hour, minutes):
     for i in range(minutes // 5):
         s = start + timedelta(minutes=5 * i)
         e = s + timedelta(minutes=5)
-        slots.append(Slot(seat, 131384, s, e, f"c{i}", True,
-                          s.strftime("%Y-%m-%d %H:%M:%S"), e.strftime("%Y-%m-%d %H:%M:%S")))
+        slots.append(
+            Slot(
+                seat,
+                131384,
+                s,
+                e,
+                f"c{i}",
+                True,
+                s.strftime("%Y-%m-%d %H:%M:%S"),
+                e.strftime("%Y-%m-%d %H:%M:%S"),
+            )
+        )
     return Block(key=seat, slots=tuple(slots))
 
 

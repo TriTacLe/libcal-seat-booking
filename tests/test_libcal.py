@@ -50,9 +50,7 @@ def test_a_classname_means_not_bookable():
 
 def test_fills_in_the_resource_id():
     payload = {
-        "slots": [
-            {"itemId": 165230, "start": "2026-10-05 08:00:00", "end": "2026-10-05 08:05:00"}
-        ]
+        "slots": [{"itemId": 165230, "start": "2026-10-05 08:00:00", "end": "2026-10-05 08:05:00"}]
     }
     slots = parse_grid(payload, SAST, {165230: 131384}).slots
     assert slots[0].eid == 131384
@@ -87,18 +85,38 @@ def test_booking_payload_shape():
 
     def slot(start, end, checksum):
         return Slot(
-            seat_id=165248, eid=131384,
-            start=datetime(2026, 9, 22, tzinfo=SAST), end=datetime(2026, 9, 22, tzinfo=SAST),
-            checksum=checksum, free=True, raw_start=start, raw_end=end,
+            seat_id=165248,
+            eid=131384,
+            start=datetime(2026, 9, 22, tzinfo=SAST),
+            end=datetime(2026, 9, 22, tzinfo=SAST),
+            checksum=checksum,
+            free=True,
+            raw_start=start,
+            raw_end=end,
         )
 
-    block = Block(key=165248, slots=(
-        slot("2026-09-22 09:00:00", "2026-09-22 09:05:00", "aaa"),
-        slot("2026-09-22 09:05:00", "2026-09-22 09:10:00", "bbb"),
-    ))
+    block = Block(
+        key=165248,
+        slots=(
+            slot("2026-09-22 09:00:00", "2026-09-22 09:05:00", "aaa"),
+            slot("2026-09-22 09:05:00", "2026-09-22 09:10:00", "bbb"),
+        ),
+    )
     assert json.loads(bookings_json(block, 5154)) == [
-        {"lid": 5154, "eid": 131384, "seat_id": 165248,
-         "start": "2026-09-22 09:00:00", "end": "2026-09-22 09:05:00", "checksum": "aaa"},
-        {"lid": 5154, "eid": 131384, "seat_id": 165248,
-         "start": "2026-09-22 09:05:00", "end": "2026-09-22 09:10:00", "checksum": "bbb"},
+        {
+            "lid": 5154,
+            "eid": 131384,
+            "seat_id": 165248,
+            "start": "2026-09-22 09:00:00",
+            "end": "2026-09-22 09:05:00",
+            "checksum": "aaa",
+        },
+        {
+            "lid": 5154,
+            "eid": 131384,
+            "seat_id": 165248,
+            "start": "2026-09-22 09:05:00",
+            "end": "2026-09-22 09:10:00",
+            "checksum": "bbb",
+        },
     ]

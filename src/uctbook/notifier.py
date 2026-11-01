@@ -110,7 +110,7 @@ def as_html(bookings: list[HeldBooking], places: dict[int, str]) -> str:
         parts.append(
             f'<h2 style="font-size:17px;margin:22px 0 6px;">{day:%A %d %B}'
             f'<span style="font-weight:400;color:#595959;"> &middot; '
-            f'{minutes / 60:.1f} hours</span></h2>'
+            f"{minutes / 60:.1f} hours</span></h2>"
         )
         parts.append('<table style="border-collapse:collapse;width:100%;">')
         for b in rows:

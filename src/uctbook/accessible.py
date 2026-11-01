@@ -62,9 +62,7 @@ def parse_labels(html: str) -> dict[int, str]:
 
 def parse_resources(html: str) -> dict[int, int]:
     """Resource key to the eid the submit payload needs."""
-    return {
-        (int(m["seat"]) or int(m["eid"])): int(m["eid"]) for m in _CHECKBOX_RE.finditer(html)
-    }
+    return {(int(m["seat"]) or int(m["eid"])): int(m["eid"]) for m in _CHECKBOX_RE.finditer(html)}
 
 
 def fetch(

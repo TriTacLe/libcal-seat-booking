@@ -8,15 +8,24 @@ from uctbook.state import Ledger
 SAST = ZoneInfo("Africa/Johannesburg")
 
 ROW = {
-    "what": "KC01", "from": "8:00am", "to": "12:00pm",
-    "when": "Monday 28 September 2026", "code": "2CG", "token": "3d03979feac4",
+    "what": "KC01",
+    "from": "8:00am",
+    "to": "12:00pm",
+    "when": "Monday 28 September 2026",
+    "code": "2CG",
+    "token": "3d03979feac4",
 }
 
 
 def catalogue():
     return Catalogue(
-        locations=[Location(id=5154, name="Oppenheimer",
-                            categories=[Entry(id=33215, name="Knowledge Commons Computers")])],
+        locations=[
+            Location(
+                id=5154,
+                name="Oppenheimer",
+                categories=[Entry(id=33215, name="Knowledge Commons Computers")],
+            )
+        ],
         seats=[Seat(id=165230, name="KC01", eid=131384, location=5154, category=33215)],
     )
 
